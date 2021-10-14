@@ -1,4 +1,4 @@
-package example
+package main
 
 import (
 	"encoding/json"
@@ -9,10 +9,10 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/IOTechSystems/onvif"
+	"github.com/IOTechSystems/onvif/device"
+	discover "github.com/IOTechSystems/onvif/ws-discovery"
 	"github.com/beevik/etree"
-	"github.com/use-go/onvif"
-	"github.com/use-go/onvif/device"
-	discover "github.com/use-go/onvif/ws-discovery"
 )
 
 func TestGetAvailableDevicesAtSpecificEthernetInterface(t *testing.T) {
@@ -21,7 +21,7 @@ func TestGetAvailableDevicesAtSpecificEthernetInterface(t *testing.T) {
 	// runDiscovery("en0")
 	s := onvif.GetAvailableDevicesAtSpecificEthernetInterface("en0")
 
-	log.Printf("%s", s)
+	log.Printf("%v", s)
 }
 
 func client() {

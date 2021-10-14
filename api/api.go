@@ -10,12 +10,12 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/IOTechSystems/onvif"
+	"github.com/IOTechSystems/onvif/gosoap"
+	"github.com/IOTechSystems/onvif/networking"
+	wsdiscovery "github.com/IOTechSystems/onvif/ws-discovery"
 	"github.com/beevik/etree"
 	"github.com/gin-gonic/gin"
-	"github.com/use-go/onvif"
-	"github.com/use-go/onvif/gosoap"
-	"github.com/use-go/onvif/networking"
-	wsdiscovery "github.com/use-go/onvif/ws-discovery"
 )
 
 func RunApi() {

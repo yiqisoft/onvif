@@ -11,11 +11,11 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/IOTechSystems/onvif/device"
+	"github.com/IOTechSystems/onvif/gosoap"
+	"github.com/IOTechSystems/onvif/networking"
+	wsdiscovery "github.com/IOTechSystems/onvif/ws-discovery"
 	"github.com/beevik/etree"
-	"github.com/use-go/onvif/device"
-	"github.com/use-go/onvif/gosoap"
-	"github.com/use-go/onvif/networking"
-	wsdiscovery "github.com/use-go/onvif/ws-discovery"
 )
 
 //Xlmns XML Scheam
@@ -281,4 +281,19 @@ func (dev Device) callMethodDo(endpoint string, method interface{}) (*http.Respo
 	}
 
 	return networking.SendSoap(dev.params.HttpClient, endpoint, soap.String())
+}
+
+func (dev *Device) GetDeviceParams() DeviceParams {
+	return dev.params
+}
+
+func (dev Device) GetEndpointByRequestStruct(requestStruct interface{}) (string, error) {
+	pkgPath := strings.Split(reflect.TypeOf(requestStruct).Elem().PkgPath(), "/")
+	pkg := strings.ToLower(pkgPath[len(pkgPath)-1])
+
+	endpoint, err := dev.getEndpoint(pkg)
+	if err != nil {
+		return "", err
+	}
+	return endpoint, err
 }
