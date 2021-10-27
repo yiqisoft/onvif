@@ -1,15 +1,10 @@
-# onvif protocol
+# Onvif library
 
 Simple management of onvif IP-devices cameras. onvif is an implementation of  ONVIF protocol for managing onvif IP devices. The purpose of this library is convenient and easy management of IP cameras and other devices that support ONVIF standard.
 
-## Installation
+## Overview
 
-To install the library,  use **go get**:
-
-```go
-go get github.com/use-go/onvif
-
-```
+This repository is forked from: [use-go/onvif](https://github.com/use-go/onvif)
 
 ## Supported services
 
@@ -18,11 +13,8 @@ The following services are implemented:
 - Device
 - Media
 - PTZ
-- Imaging
 - Event
 - Discovery
-- Auth(More Options)
-- Soap
 
 ## Using
 
@@ -97,7 +89,3 @@ device := onvif.NewDevice(onvif.DeviceParams{Xaddr: "192.168.13.42:1234", Userna
 device.Authenticate("username", "password")
 resp, err := dev.CallMethod(createUsers)
 ```
-
-## Great Thanks
-
-Enhanced and Improved from: [goonvif](https://github.com/yakovlevdmv/goonvif)

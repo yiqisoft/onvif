@@ -1,8 +1,8 @@
 package device
 
 import (
-	"github.com/use-go/onvif/xsd"
-	"github.com/use-go/onvif/xsd/onvif"
+	"github.com/IOTechSystems/onvif/xsd"
+	"github.com/IOTechSystems/onvif/xsd/onvif"
 )
 
 type Service struct {
@@ -238,7 +238,7 @@ type AddScopesResponse struct {
 //TODO: One or more repetitions
 type RemoveScopes struct {
 	XMLName   string     `xml:"tds:RemoveScopes"`
-	ScopeItem xsd.AnyURI `xml:"onvif:ScopeItem"`
+	ScopeItem xsd.AnyURI `xml:"ScopeItem"`
 }
 
 type RemoveScopesResponse struct {
@@ -402,10 +402,10 @@ type GetDNSResponse struct {
 }
 
 type SetDNS struct {
-	XMLName      string          `xml:"tds:SetDNS"`
-	FromDHCP     xsd.Boolean     `xml:"tds:FromDHCP"`
-	SearchDomain xsd.Token       `xml:"tds:SearchDomain"`
-	DNSManual    onvif.IPAddress `xml:"tds:DNSManual"`
+	XMLName      string           `xml:"tds:SetDNS"`
+	FromDHCP     *xsd.Boolean     `xml:"tds:FromDHCP,omitempty"`
+	SearchDomain *xsd.Token       `xml:"tds:SearchDomain,omitempty"`
+	DNSManual    *onvif.IPAddress `xml:"tds:DNSManual,omitempty"`
 }
 
 type SetDNSResponse struct {
@@ -455,9 +455,9 @@ type GetNetworkInterfacesResponse struct {
 }
 
 type SetNetworkInterfaces struct {
-	XMLName          string                                 `xml:"tds:SetNetworkInterfaces"`
-	InterfaceToken   onvif.ReferenceToken                   `xml:"tds:InterfaceToken"`
-	NetworkInterface onvif.NetworkInterfaceSetConfiguration `xml:"tds:NetworkInterface"`
+	XMLName          string                                  `xml:"tds:SetNetworkInterfaces"`
+	InterfaceToken   *onvif.ReferenceToken                   `xml:"tds:InterfaceToken,omitempty"`
+	NetworkInterface *onvif.NetworkInterfaceSetConfiguration `xml:"tds:NetworkInterface,omitempty"`
 }
 
 type SetNetworkInterfacesResponse struct {
@@ -469,7 +469,7 @@ type GetNetworkProtocols struct {
 }
 
 type GetNetworkProtocolsResponse struct {
-	NetworkProtocols onvif.NetworkProtocol
+	NetworkProtocols []onvif.NetworkProtocol
 }
 
 type SetNetworkProtocols struct {
@@ -545,7 +545,7 @@ type AddIPAddressFilterResponse struct {
 
 type RemoveIPAddressFilter struct {
 	XMLName         string                `xml:"tds:RemoveIPAddressFilter"`
-	IPAddressFilter onvif.IPAddressFilter `xml:"onvif:IPAddressFilter"`
+	IPAddressFilter onvif.IPAddressFilter `xml:"IPAddressFilter"`
 }
 
 type RemoveIPAddressFilterResponse struct {

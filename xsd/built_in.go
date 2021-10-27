@@ -11,7 +11,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/use-go/onvif/xsd/iso8601"
+	"github.com/IOTechSystems/onvif/xsd/iso8601"
 )
 
 /*
@@ -229,13 +229,9 @@ func (tp Duration) NewDateTime(years, months, days, hours, minutes, seconds stri
 	TODO: decide good type for time with proper format
 	TODO: process restrictions
 */
-type DateTime AnySimpleType
-
-/*
-	Construct an instance of xsd dateTime type
-*/
-func (tp DateTime) NewDateTime(time time.Time) DateTime {
-	return DateTime(time.Format("2002-10-10T12:00:00-05:00"))
+type DateTime struct {
+	Time Time
+	Date Date
 }
 
 /*
@@ -258,14 +254,15 @@ func (tp DateTime) NewDateTime(time time.Time) DateTime {
 
 	TODO: process restrictions
 */
-type Time AnySimpleType
+type Time struct {
+	Hour   string
+	Minute string
+	Second string
+}
 
 /*
 	Construct an instance of xsd time type
 */
-func (tp DateTime) NewTime(time time.Time) DateTime {
-	return DateTime(time.Format("15:04:05"))
-}
 
 /*
 	The ·value space· of date consists of top-open intervals of
@@ -277,13 +274,10 @@ func (tp DateTime) NewTime(time time.Time) DateTime {
 	cover the nontimezoned timeline, one per day. For timezoned
 	values, the intervals begin at every minute and therefore overlap.
 */
-type Date AnySimpleType
-
-/*
-	Construct an instance of xsd date type
-*/
-func (tp Date) NewDate(time time.Time) Date {
-	return Date(time.Format("2004-04-12-05:00"))
+type Date struct {
+	Year  string
+	Month string
+	date  string
 }
 
 /*
@@ -305,7 +299,7 @@ type GYearMonth AnySimpleType
 	Construct an instance of xsd GYearMonth type
 */
 func (tp GYearMonth) NewGYearMonth(time time.Time) GYearMonth {
-	return GYearMonth(fmt.Sprintf("", time.Year(), "-", time.Month()))
+	return GYearMonth(fmt.Sprint("", time.Year(), "-", time.Month()))
 	//return GYearMonth(time.Format("2004-04-05:00"))
 }
 
@@ -327,7 +321,7 @@ type GYear AnySimpleType
 	Construct an instance of xsd GYear type
 */
 func (tp GYear) NewGYear(time time.Time) GYear {
-	return GYear(fmt.Sprintf("", time.Year()))
+	return GYear(fmt.Sprint("", time.Year()))
 	//return GYearMonth(time.Format("2004-04-05:00"))
 }
 
@@ -347,7 +341,7 @@ type GMonthDay AnySimpleType
 	Construct an instance of xsd GMonthDay type
 */
 func (tp GMonthDay) NewGMonthDay(time time.Time) GMonthDay {
-	return GMonthDay(fmt.Sprintf("--", time.Month(), "-", time.Day()))
+	return GMonthDay(fmt.Sprint("--", time.Month(), "-", time.Day()))
 }
 
 /*
@@ -367,7 +361,7 @@ type GDay AnySimpleType
 	Construct an instance of xsd GDay type
 */
 func (tp GDay) NewGDay(time time.Time) GDay {
-	return GDay(fmt.Sprintf("---", time.Day()))
+	return GDay(fmt.Sprint("---", time.Day()))
 }
 
 /*
@@ -385,7 +379,7 @@ func (tp GDay) NewGDay(time time.Time) GDay {
 type GMonth AnySimpleType
 
 func (tp GMonth) NewGMonth(time time.Time) GMonth {
-	return GMonth(fmt.Sprintf("--", time.Month()))
+	return GMonth(fmt.Sprint("--", time.Month()))
 }
 
 /*
