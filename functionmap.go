@@ -36,4 +36,7 @@ var MediaFunctionMap = map[string]Function{
 	GetMetadataConfigurationOptions:     &media.GetMetadataConfigurationOptionsFunction{},
 	GetProfiles:                         &media.GetProfilesFunction{},
 	GetStreamUri:                        &media.GetStreamUriFunction{},
+	GetVideoEncoderConfiguration:        &media.GetVideoEncoderConfigurationFunction{},
+	SetVideoEncoderConfiguration:        &media.SetVideoEncoderConfigurationFunction{},
+	GetVideoEncoderConfigurationOptions: &media.GetVideoEncoderConfigurationOptionsFunction{},
 }
