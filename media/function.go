@@ -89,3 +89,33 @@ func (function *GetStreamUriFunction) Request() interface{} {
 func (function *GetStreamUriFunction) Response() interface{} {
 	return &GetStreamUriResponse{}
 }
+
+type GetVideoEncoderConfigurationFunction struct{}
+
+func (function *GetVideoEncoderConfigurationFunction) Request() interface{} {
+	return &GetVideoEncoderConfiguration{}
+}
+
+func (function *GetVideoEncoderConfigurationFunction) Response() interface{} {
+	return &GetVideoEncoderConfigurationResponse{}
+}
+
+type SetVideoEncoderConfigurationFunction struct{}
+
+func (function *SetVideoEncoderConfigurationFunction) Request() interface{} {
+	return &SetVideoEncoderConfiguration{}
+}
+
+func (function *SetVideoEncoderConfigurationFunction) Response() interface{} {
+	return &SetVideoEncoderConfigurationResponse{}
+}
+
+type GetVideoEncoderConfigurationOptionsFunction struct{}
+
+func (function *GetVideoEncoderConfigurationOptionsFunction) Request() interface{} {
+	return &GetVideoEncoderConfigurationOptions{}
+}
+
+func (function *GetVideoEncoderConfigurationOptionsFunction) Response() interface{} {
+	return &GetVideoEncoderConfigurationOptionsResponse{}
+}

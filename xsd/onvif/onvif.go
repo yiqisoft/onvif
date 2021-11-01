@@ -345,33 +345,33 @@ type Profile struct {
 	Token                       ReferenceToken `xml:"token,attr"`
 	Fixed                       bool           `xml:"fixed,attr"`
 	Name                        Name
-	VideoSourceConfiguration    VideoSourceConfiguration
-	AudioSourceConfiguration    AudioSourceConfiguration
-	VideoEncoderConfiguration   VideoEncoderConfiguration
-	AudioEncoderConfiguration   AudioEncoderConfiguration
-	VideoAnalyticsConfiguration VideoAnalyticsConfiguration
-	PTZConfiguration            PTZConfiguration
-	MetadataConfiguration       MetadataConfiguration
-	Extension                   ProfileExtension
+	VideoSourceConfiguration    *VideoSourceConfiguration    `xml:",omitempty"`
+	AudioSourceConfiguration    *AudioSourceConfiguration    `xml:",omitempty"`
+	VideoEncoderConfiguration   *VideoEncoderConfiguration   `xml:",omitempty"`
+	AudioEncoderConfiguration   *AudioEncoderConfiguration   `xml:",omitempty"`
+	VideoAnalyticsConfiguration *VideoAnalyticsConfiguration `xml:",omitempty"`
+	PTZConfiguration            *PTZConfiguration            `xml:",omitempty"`
+	MetadataConfiguration       *MetadataConfiguration       `xml:",omitempty"`
+	Extension                   *ProfileExtension            `xml:",omitempty"`
 }
 
 type VideoSourceConfiguration struct {
 	ConfigurationEntity
-	ViewMode    string                            `xml:"ViewMode,attr"`
-	SourceToken ReferenceToken                    `xml:"SourceToken"`
-	Bounds      IntRectangle                      `xml:"Bounds"`
-	Extension   VideoSourceConfigurationExtension `xml:"Extension"`
+	ViewMode    string                             `xml:"ViewMode,attr"`
+	SourceToken *ReferenceToken                    `xml:",omitempty"`
+	Bounds      *IntRectangle                      `xml:",omitempty"`
+	Extension   *VideoSourceConfigurationExtension `xml:",omitempty"`
 }
 
 type ConfigurationEntity struct {
-	Token    ReferenceToken `xml:"token,attr"`
-	Name     Name           `xml:"Name"`
-	UseCount int            `xml:"UseCount"`
+	Token    ReferenceToken `json:",omitempty" xml:"token,attr,omitempty"`
+	Name     Name           `json:",omitempty" xml:",omitempty"`
+	UseCount int            `json:",omitempty" xml:",omitempty"`
 }
 
 type VideoSourceConfigurationExtension struct {
-	Rotate    Rotate                             `xml:"Rotate"`
-	Extension VideoSourceConfigurationExtension2 `xml:"Extension"`
+	Rotate    *Rotate                             `xml:",omitempty"`
+	Extension *VideoSourceConfigurationExtension2 `xml:",omitempty"`
 }
 
 type Rotate struct {
@@ -421,14 +421,14 @@ type AudioSourceConfiguration struct {
 
 type VideoEncoderConfiguration struct {
 	ConfigurationEntity
-	Encoding       VideoEncoding          `xml:"Encoding"`
-	Resolution     VideoResolution        `xml:"Resolution"`
-	Quality        float64                `xml:"Quality"`
-	RateControl    VideoRateControl       `xml:"RateControl"`
-	MPEG4          Mpeg4Configuration     `xml:"MPEG4"`
-	H264           H264Configuration      `xml:"H264"`
-	Multicast      MulticastConfiguration `xml:"Multicast"`
-	SessionTimeout xsd.Duration           `xml:"SessionTimeout"`
+	Encoding       *VideoEncoding          `xml:"trt:Encoding,omitempty"`
+	Resolution     *VideoResolution        `xml:"trt:Resolution,omitempty"`
+	Quality        float64                 `xml:"trt:Quality,omitempty"`
+	RateControl    *VideoRateControl       `xml:"trt:RateControl,omitempty"`
+	MPEG4          *Mpeg4Configuration     `xml:"trt:MPEG4,omitempty"`
+	H264           *H264Configuration      `xml:"trt:H264,omitempty"`
+	Multicast      *MulticastConfiguration `xml:"trt:Multicast,omitempty"`
+	SessionTimeout *xsd.Duration           `xml:"trt:SessionTimeout,omitempty"`
 }
 
 type VideoEncoding xsd.String
@@ -457,7 +457,7 @@ type MulticastConfiguration struct {
 	Address   IPAddress   `json:",omitempty" xml:",omitempty"`
 	Port      int         `json:",omitempty" xml:",omitempty"`
 	TTL       int         `json:",omitempty" xml:",omitempty"`
-	AutoStart xsd.Boolean `json:",omitempty" xml:",omitempty"`
+	AutoStart xsd.Boolean `json:",omitempty" `
 }
 
 type IPAddress struct {
@@ -487,8 +487,8 @@ type AudioEncoding xsd.String
 
 type VideoAnalyticsConfiguration struct {
 	ConfigurationEntity
-	AnalyticsEngineConfiguration AnalyticsEngineConfiguration `xml:"AnalyticsEngineConfiguration"`
-	RuleEngineConfiguration      RuleEngineConfiguration      `xml:"RuleEngineConfiguration"`
+	AnalyticsEngineConfiguration *AnalyticsEngineConfiguration `xml:"onvif:AnalyticsEngineConfiguration"`
+	RuleEngineConfiguration      *RuleEngineConfiguration      `xml:"onvif:RuleEngineConfiguration"`
 }
 
 type AnalyticsEngineConfiguration struct {
@@ -503,18 +503,18 @@ type Config struct {
 }
 
 type ItemList struct {
-	SimpleItem  SimpleItem        `xml:"SimpleItem"`
-	ElementItem ElementItem       `xml:"ElementItem"`
-	Extension   ItemListExtension `xml:"Extension"`
+	SimpleItem  *SimpleItem        `xml:"onvif:SimpleItem,omitempty"`
+	ElementItem *ElementItem       `xml:"onvif:ElementItem,omitempty"`
+	Extension   *ItemListExtension `xml:"onvif:Extension,omitempty"`
 }
 
 type SimpleItem struct {
-	Name  string            `xml:"Name,attr"`
-	Value xsd.AnySimpleType `xml:"Value,attr"`
+	Name  string            `xml:"onvif:Name,attr,omitempty"`
+	Value xsd.AnySimpleType `xml:"onvif:Value,attr,omitempty"`
 }
 
 type ElementItem struct {
-	Name string `xml:"Name,attr"`
+	Name string `xml:"Name,attr,omitempty"`
 }
 
 type ItemListExtension xsd.AnyType
@@ -522,55 +522,55 @@ type ItemListExtension xsd.AnyType
 type AnalyticsEngineConfigurationExtension xsd.AnyType
 
 type RuleEngineConfiguration struct {
-	Rule      Config                           `xml:"Rule"`
-	Extension RuleEngineConfigurationExtension `xml:"Extension"`
+	Rule      *Config                           `xml:"onvif:Rule,omitempty"`
+	Extension *RuleEngineConfigurationExtension `xml:"onvif:Extension,omitempty"`
 }
 
 type RuleEngineConfigurationExtension xsd.AnyType
 
 type PTZConfiguration struct {
 	ConfigurationEntity
-	MoveRamp                               int                       `xml:"MoveRamp,attr"`
-	PresetRamp                             int                       `xml:"PresetRamp,attr"`
-	PresetTourRamp                         int                       `xml:"PresetTourRamp,attr"`
-	NodeToken                              ReferenceToken            `xml:"NodeToken"`
-	DefaultAbsolutePantTiltPositionSpace   xsd.AnyURI                `xml:"DefaultAbsolutePantTiltPositionSpace"`
-	DefaultAbsoluteZoomPositionSpace       xsd.AnyURI                `xml:"DefaultAbsoluteZoomPositionSpace"`
-	DefaultRelativePanTiltTranslationSpace xsd.AnyURI                `xml:"DefaultRelativePanTiltTranslationSpace"`
-	DefaultRelativeZoomTranslationSpace    xsd.AnyURI                `xml:"DefaultRelativeZoomTranslationSpace"`
-	DefaultContinuousPanTiltVelocitySpace  xsd.AnyURI                `xml:"DefaultContinuousPanTiltVelocitySpace"`
-	DefaultContinuousZoomVelocitySpace     xsd.AnyURI                `xml:"DefaultContinuousZoomVelocitySpace"`
-	DefaultPTZSpeed                        PTZSpeed                  `xml:"DefaultPTZSpeed"`
-	DefaultPTZTimeout                      xsd.Duration              `xml:"DefaultPTZTimeout"`
-	PanTiltLimits                          PanTiltLimits             `xml:"PanTiltLimits"`
-	ZoomLimits                             ZoomLimits                `xml:"ZoomLimits"`
-	Extension                              PTZConfigurationExtension `xml:"Extension"`
+	MoveRamp                               int                        `xml:"MoveRamp,attr,omitempty"`
+	PresetRamp                             int                        `xml:"PresetRamp,attr,omitempty"`
+	PresetTourRamp                         int                        `xml:"PresetTourRamp,attr,omitempty"`
+	NodeToken                              *ReferenceToken            `xml:"NodeToken,omitempty"`
+	DefaultAbsolutePantTiltPositionSpace   *xsd.AnyURI                `xml:"DefaultAbsolutePantTiltPositionSpace,omitempty"`
+	DefaultAbsoluteZoomPositionSpace       *xsd.AnyURI                `xml:"DefaultAbsoluteZoomPositionSpace,omitempty"`
+	DefaultRelativePanTiltTranslationSpace *xsd.AnyURI                `xml:"DefaultRelativePanTiltTranslationSpace,omitempty"`
+	DefaultRelativeZoomTranslationSpace    *xsd.AnyURI                `xml:"DefaultRelativeZoomTranslationSpace,omitempty"`
+	DefaultContinuousPanTiltVelocitySpace  *xsd.AnyURI                `xml:"DefaultContinuousPanTiltVelocitySpace,omitempty"`
+	DefaultContinuousZoomVelocitySpace     *xsd.AnyURI                `xml:"DefaultContinuousZoomVelocitySpace,omitempty"`
+	DefaultPTZSpeed                        *PTZSpeed                  `xml:"DefaultPTZSpeed,omitempty"`
+	DefaultPTZTimeout                      *xsd.Duration              `xml:"DefaultPTZTimeout,omitempty"`
+	PanTiltLimits                          *PanTiltLimits             `xml:"PanTiltLimits,omitempty"`
+	ZoomLimits                             *ZoomLimits                `xml:"ZoomLimits,omitempty"`
+	Extension                              *PTZConfigurationExtension `xml:"Extension,omitempty"`
 }
 
 type PTZSpeed struct {
-	PanTilt Vector2D `xml:"PanTilt"`
-	Zoom    Vector1D `xml:"Zoom"`
+	PanTilt *Vector2D `xml:"PanTilt,omitempty"`
+	Zoom    *Vector1D `xml:"Zoom,omitempty"`
 }
 
 type Vector2D struct {
-	X     float64    `xml:"x,attr"`
-	Y     float64    `xml:"y,attr"`
-	Space xsd.AnyURI `xml:"space,attr"`
+	X     float64     `xml:"x,attr,omitempty"`
+	Y     float64     `xml:"y,attr,omitempty"`
+	Space *xsd.AnyURI `xml:"space,attr,omitempty"`
 }
 
 type Vector1D struct {
-	X     float64    `xml:"x,attr"`
-	Space xsd.AnyURI `xml:"space,attr"`
+	X     float64     `xml:"x,attr,omitempty"`
+	Space *xsd.AnyURI `xml:"space,attr,omitempty"`
 }
 
 type PanTiltLimits struct {
-	Range Space2DDescription `xml:"Range"`
+	Range *Space2DDescription `xml:"Range,omitempty"`
 }
 
 type Space2DDescription struct {
-	URI    xsd.AnyURI `xml:"URI"`
-	XRange FloatRange `xml:"XRange"`
-	YRange FloatRange `xml:"YRange"`
+	URI    *xsd.AnyURI `xml:"URI,omitempty"`
+	XRange *FloatRange `xml:"XRange,omitempty"`
+	YRange *FloatRange `xml:"YRange,omitempty"`
 }
 
 type ZoomLimits struct {
@@ -583,8 +583,8 @@ type Space1DDescription struct {
 }
 
 type PTZConfigurationExtension struct {
-	PTControlDirection PTControlDirection         `xml:"PTControlDirection"`
-	Extension          PTZConfigurationExtension2 `xml:"Extension"`
+	PTControlDirection *PTControlDirection         `xml:"PTControlDirection,omitempty"`
+	Extension          *PTZConfigurationExtension2 `xml:"Extension,omitempty"`
 }
 
 type PTControlDirection struct {
@@ -611,7 +611,7 @@ type PTZConfigurationExtension2 xsd.AnyType
 
 type MetadataConfiguration struct {
 	ConfigurationEntity
-	CompressionType              string                          `json:",omitempty" xml:",omitempty"`
+	CompressionType              string                          `json:",omitempty" xml:",attr,omitempty"`
 	PTZStatus                    *PTZFilter                      `json:",omitempty" xml:",omitempty"`
 	Events                       *EventSubscription              `json:",omitempty" xml:",omitempty"`
 	Analytics                    *xsd.Boolean                    `json:",omitempty" xml:",omitempty"`
@@ -638,9 +638,9 @@ type SubscriptionPolicy xsd.AnyType
 type MetadataConfigurationExtension xsd.AnyType
 
 type ProfileExtension struct {
-	AudioOutputConfiguration  AudioOutputConfiguration
-	AudioDecoderConfiguration AudioDecoderConfiguration
-	Extension                 ProfileExtension2
+	AudioOutputConfiguration  *AudioOutputConfiguration  `xml:",omitempty"`
+	AudioDecoderConfiguration *AudioDecoderConfiguration `xml:",omitempty"`
+	Extension                 *ProfileExtension2         `xml:",omitempty"`
 }
 
 type AudioOutputConfiguration struct {
@@ -693,7 +693,7 @@ type VideoEncoderConfigurationOptions struct {
 }
 
 type JpegOptions struct {
-	ResolutionsAvailable  VideoResolution
+	ResolutionsAvailable  []VideoResolution
 	FrameRateRange        IntRange
 	EncodingIntervalRange IntRange
 }
@@ -707,11 +707,11 @@ type Mpeg4Options struct {
 }
 
 type H264Options struct {
-	ResolutionsAvailable  VideoResolution
+	ResolutionsAvailable  []VideoResolution
 	GovLengthRange        IntRange
 	FrameRateRange        IntRange
 	EncodingIntervalRange IntRange
-	H264ProfilesSupported H264Profile
+	H264ProfilesSupported []H264Profile
 }
 
 type VideoEncoderOptionsExtension struct {
@@ -808,15 +808,15 @@ type G726DecOptions struct {
 type AudioDecoderConfigurationOptionsExtension xsd.AnyType
 
 type StreamSetup struct {
-	Stream    StreamType `xml:"Stream"`
-	Transport Transport  `xml:"Transport"`
+	Stream    *StreamType `xml:"onvif:Stream,omitempty"`
+	Transport *Transport  `xml:"onvif:Transport,omitempty"`
 }
 
 type StreamType xsd.String
 
 type Transport struct {
-	Protocol TransportProtocol `xml:"Protocol"`
-	Tunnel   *Transport        `xml:"Tunnel"`
+	Protocol *TransportProtocol `xml:"onvif:Protocol,omitempty"`
+	Tunnel   *Transport         `xml:"onvif:Tunnel,omitempty"`
 }
 
 //enum

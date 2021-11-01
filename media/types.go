@@ -468,9 +468,9 @@ type SetVideoSourceConfigurationResponse struct {
 }
 
 type SetVideoEncoderConfiguration struct {
-	XMLName          string                          `xml:"trt:SetVideoEncoderConfiguration"`
-	Configuration    onvif.VideoEncoderConfiguration `xml:"trt:Configuration"`
-	ForcePersistence xsd.Boolean                     `xml:"trt:ForcePersistence"`
+	XMLName          string                           `xml:"trt:SetVideoEncoderConfiguration"`
+	Configuration    *onvif.VideoEncoderConfiguration `xml:"trt:Configuration,omitempty"`
+	ForcePersistence *xsd.Boolean                     `xml:"trt:ForcePersistence,omitempty"`
 }
 
 type SetVideoEncoderConfigurationResponse struct {
@@ -504,7 +504,7 @@ type SetVideoAnalyticsConfigurationResponse struct {
 }
 
 type SetMetadataConfiguration struct {
-	XMLName          string                      `xml:"trt:GetDeviceInformation"`
+	XMLName          string                      `xml:"trt:SetMetadataConfiguration"`
 	Configuration    onvif.MetadataConfiguration `xml:"trt:Configuration"`
 	ForcePersistence xsd.Boolean                 `xml:"trt:ForcePersistence"`
 }
@@ -613,9 +613,9 @@ type GetGuaranteedNumberOfVideoEncoderInstancesResponse struct {
 }
 
 type GetStreamUri struct {
-	XMLName      string               `xml:"trt:GetStreamUri"`
-	StreamSetup  onvif.StreamSetup    `xml:"trt:StreamSetup"`
-	ProfileToken onvif.ReferenceToken `xml:"trt:ProfileToken"`
+	XMLName      string                `xml:"trt:GetStreamUri"`
+	StreamSetup  *onvif.StreamSetup    `xml:"trt:StreamSetup"`
+	ProfileToken *onvif.ReferenceToken `xml:"trt:ProfileToken"`
 }
 
 type GetStreamUriResponse struct {
