@@ -38,13 +38,17 @@ func main() {
 	}
 
 	//Preparing commands
+	UserLevel := onvif.UserLevel("User")
 	systemDateAndTyme := device.GetSystemDateAndTime{}
 	getCapabilities := device.GetCapabilities{Category: "All"}
-	createUser := device.CreateUsers{User: onvif.User{
-		Username:  "TestUser",
-		Password:  "TestPassword",
-		UserLevel: "User",
-	},
+	createUser := device.CreateUsers{
+		User: []onvif.User{
+			{
+				Username:  "TestUser",
+				Password:  "TestPassword",
+				UserLevel: &UserLevel,
+			},
+		},
 	}
 
 	//Commands execution

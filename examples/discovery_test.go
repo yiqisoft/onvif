@@ -11,7 +11,7 @@ import (
 
 	"github.com/IOTechSystems/onvif"
 	"github.com/IOTechSystems/onvif/device"
-	discover "github.com/IOTechSystems/onvif/ws-discovery"
+	"github.com/IOTechSystems/onvif/ws-discovery"
 	"github.com/beevik/etree"
 )
 
@@ -19,7 +19,7 @@ func TestGetAvailableDevicesAtSpecificEthernetInterface(t *testing.T) {
 
 	// client()
 	// runDiscovery("en0")
-	s := onvif.GetAvailableDevicesAtSpecificEthernetInterface("en0")
+	s := wsdiscovery.GetAvailableDevicesAtSpecificEthernetInterface("en0")
 
 	log.Printf("%v", s)
 }
@@ -45,7 +45,7 @@ type Host struct {
 
 func runDiscovery(interfaceName string) {
 	var hosts []*Host
-	devices := discover.SendProbe(interfaceName, nil, []string{"dn:NetworkVideoTransmitter"}, map[string]string{"dn": "http://www.onvif.org/ver10/network/wsdl"})
+	devices := wsdiscovery.SendProbe(interfaceName, nil, []string{"dn:NetworkVideoTransmitter"}, map[string]string{"dn": "http://www.onvif.org/ver10/network/wsdl"})
 	for _, j := range devices {
 		doc := etree.NewDocument()
 		if err := doc.ReadFromString(j); err != nil {

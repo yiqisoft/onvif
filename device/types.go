@@ -214,13 +214,13 @@ type GetScopes struct {
 }
 
 type GetScopesResponse struct {
-	Scopes onvif.Scope
+	Scopes []onvif.Scope
 }
 
 //TODO: one or more scopes
 type SetScopes struct {
-	XMLName string     `xml:"tds:SetScopes"`
-	Scopes  xsd.AnyURI `xml:"tds:Scopes"`
+	XMLName string       `xml:"tds:SetScopes"`
+	Scopes  []xsd.AnyURI `xml:"tds:Scopes"`
 }
 
 type SetScopesResponse struct {
@@ -228,8 +228,8 @@ type SetScopesResponse struct {
 
 //TODO: list of scopes
 type AddScopes struct {
-	XMLName   string     `xml:"tds:AddScopes"`
-	ScopeItem xsd.AnyURI `xml:"tds:ScopeItem"`
+	XMLName   string       `xml:"tds:AddScopes"`
+	ScopeItem []xsd.AnyURI `xml:"tds:ScopeItem"`
 }
 
 type AddScopesResponse struct {
@@ -237,8 +237,8 @@ type AddScopesResponse struct {
 
 //TODO: One or more repetitions
 type RemoveScopes struct {
-	XMLName   string     `xml:"tds:RemoveScopes"`
-	ScopeItem xsd.AnyURI `xml:"ScopeItem"`
+	XMLName   string       `xml:"tds:RemoveScopes"`
+	ScopeItem []xsd.AnyURI `xml:"ScopeItem"`
 }
 
 type RemoveScopesResponse struct {
@@ -322,13 +322,13 @@ type GetUsers struct {
 }
 
 type GetUsersResponse struct {
-	User onvif.User
+	User []onvif.User
 }
 
 //TODO: List of users
 type CreateUsers struct {
-	XMLName string     `xml:"tds:CreateUsers"`
-	User    onvif.User `xml:"tds:User,omitempty"`
+	XMLName string       `xml:"tds:CreateUsers"`
+	User    []onvif.User `xml:"tds:User,omitempty"`
 }
 
 type CreateUsersResponse struct {
@@ -336,16 +336,16 @@ type CreateUsersResponse struct {
 
 //TODO: one or more Username
 type DeleteUsers struct {
-	XMLName  xsd.String `xml:"tds:DeleteUsers"`
-	Username xsd.String `xml:"tds:Username"`
+	XMLName  xsd.String   `xml:"tds:DeleteUsers"`
+	Username []xsd.String `xml:"tds:Username"`
 }
 
 type DeleteUsersResponse struct {
 }
 
 type SetUser struct {
-	XMLName string     `xml:"tds:SetUser"`
-	User    onvif.User `xml:"tds:User"`
+	XMLName string       `xml:"tds:SetUser"`
+	User    []onvif.User `xml:"tds:User"`
 }
 
 type SetUserResponse struct {

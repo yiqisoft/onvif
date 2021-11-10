@@ -149,3 +149,103 @@ func (function *SystemRebootFunction) Request() interface{} {
 func (function *SystemRebootFunction) Response() interface{} {
 	return &SystemRebootResponse{}
 }
+
+type GetUsersFunction struct{}
+
+func (function *GetUsersFunction) Request() interface{} {
+	return &GetUsers{}
+}
+
+func (function *GetUsersFunction) Response() interface{} {
+	return &GetUsersResponse{}
+}
+
+type CreateUsersFunction struct{}
+
+func (function *CreateUsersFunction) Request() interface{} {
+	return &CreateUsers{}
+}
+
+func (function *CreateUsersFunction) Response() interface{} {
+	return &CreateUsersResponse{}
+}
+
+type DeleteUsersFunction struct{}
+
+func (function *DeleteUsersFunction) Request() interface{} {
+	return &DeleteUsers{}
+}
+
+func (function *DeleteUsersFunction) Response() interface{} {
+	return &DeleteUsersResponse{}
+}
+
+type SetUserFunction struct{}
+
+func (function *SetUserFunction) Request() interface{} {
+	return &SetUser{}
+}
+
+func (function *SetUserFunction) Response() interface{} {
+	return &SetUserResponse{}
+}
+
+type GetDiscoveryModeFunction struct{}
+
+func (function *GetDiscoveryModeFunction) Request() interface{} {
+	return &GetDiscoveryMode{}
+}
+
+func (function *GetDiscoveryModeFunction) Response() interface{} {
+	return &GetDiscoveryModeResponse{}
+}
+
+type SetDiscoveryModeFunction struct{}
+
+func (function *SetDiscoveryModeFunction) Request() interface{} {
+	return &SetDiscoveryMode{}
+}
+
+func (function *SetDiscoveryModeFunction) Response() interface{} {
+	return &SetDiscoveryModeResponse{}
+}
+
+type GetScopesFunction struct{}
+
+func (function *GetScopesFunction) Request() interface{} {
+	return &GetScopes{}
+}
+
+func (function *GetScopesFunction) Response() interface{} {
+	return &GetScopesResponse{}
+}
+
+type SetScopesFunction struct{}
+
+func (function *SetScopesFunction) Request() interface{} {
+	return &SetScopes{}
+}
+
+func (function *SetScopesFunction) Response() interface{} {
+	return &SetScopesResponse{}
+}
+
+type AddScopesFunction struct{}
+
+func (function *AddScopesFunction) Request() interface{} {
+	return &AddScopes{}
+}
+
+func (function *AddScopesFunction) Response() interface{} {
+	return &AddScopesResponse{}
+}
+
+type RemoveScopesFunction struct{}
+
+func (function *RemoveScopesFunction) Request() interface{} {
+	return &RemoveScopes{}
+}
+
+func (function *RemoveScopesFunction) Response() interface{} {
+	return &RemoveScopesResponse{}
+}

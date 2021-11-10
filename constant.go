@@ -30,6 +30,18 @@ const (
 	SetSystemFactoryDefault = "SetSystemFactoryDefault"
 	SystemReboot            = "SystemReboot"
 
+	GetUsers    = "GetUsers"
+	CreateUsers = "CreateUsers"
+	DeleteUsers = "DeleteUsers"
+	SetUser     = "SetUser"
+
+	GetDiscoveryMode = "GetDiscoveryMode"
+	SetDiscoveryMode = "SetDiscoveryMode"
+	GetScopes        = "GetScopes"
+	SetScopes        = "SetScopes"
+	AddScopes        = "AddScopes"
+	RemoveScopes     = "RemoveScopes"
+
 	// WebService - Media
 	GetMetadataConfiguration            = "GetMetadataConfiguration"
 	GetMetadataConfigurations           = "GetMetadataConfigurations"
@@ -43,4 +55,12 @@ const (
 	GetVideoEncoderConfiguration        = "GetVideoEncoderConfiguration"
 	SetVideoEncoderConfiguration        = "SetVideoEncoderConfiguration"
 	GetVideoEncoderConfigurationOptions = "GetVideoEncoderConfigurationOptions"
+)
+
+// Onvif Auth Mode
+const (
+	DigestAuth        = "digest"
+	UsernameTokenAuth = "usernametoken"
+	Both              = "both"
+	NoAuth            = "none"
 )

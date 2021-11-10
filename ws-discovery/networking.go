@@ -15,13 +15,72 @@ import (
 	"log"
 	"net"
 	"os"
+	"strings"
 	"time"
 
+	"github.com/IOTechSystems/onvif"
+
+	"github.com/beevik/etree"
 	"github.com/gofrs/uuid"
 	"golang.org/x/net/ipv4"
 )
 
-const bufSize = 8192
+const (
+	bufSize              = 8192
+	defaultInterfaceName = "en0"
+)
+
+//GetAvailableDevicesAtSpecificEthernetInterface ...
+func GetAvailableDevicesAtSpecificEthernetInterface(interfaceName string) []onvif.Device {
+	/*
+		Call an ws-discovery Probe Message to Discover NVT type Devices
+	*/
+	//var scopes = []string{""}
+	//var types = []string{""}
+	if strings.TrimSpace(interfaceName) == "" {
+		interfaceName = defaultInterfaceName
+	}
+	devices := SendProbe(interfaceName, nil, nil, map[string]string{"dn": "http://www.onvif.org/ver10/network/wsdl"})
+	nvtDevices := make([]onvif.Device, 0)
+
+	for _, j := range devices {
+		doc := etree.NewDocument()
+		if err := doc.ReadFromString(j); err != nil {
+			fmt.Errorf("%s", err.Error())
+			return nil
+		}
+
+		endpoints := doc.Root().FindElements("./Body/ProbeMatches/ProbeMatch/XAddrs")
+		for _, xaddr := range endpoints {
+			xaddr := strings.Split(strings.Split(xaddr.Text(), " ")[0], "/")[2]
+			fmt.Printf("Onvif WS-Discovery: Find %s \n", xaddr)
+			c := 0
+
+			for c = 0; c < len(nvtDevices); c++ {
+				if nvtDevices[c].GetDeviceParams().Xaddr == xaddr {
+					fmt.Println(nvtDevices[c].GetDeviceParams().Xaddr, "==", xaddr)
+					break
+				}
+			}
+
+			if c < len(nvtDevices) {
+				continue
+			}
+
+			dev, err := onvif.NewDevice(onvif.DeviceParams{Xaddr: strings.Split(xaddr, " ")[0]})
+
+			if err != nil {
+				fmt.Println("Error", xaddr)
+				fmt.Println(err)
+				continue
+			} else {
+				nvtDevices = append(nvtDevices, *dev)
+			}
+		}
+	}
+
+	return nvtDevices
+}
 
 //SendProbe to device
 func SendProbe(interfaceName string, scopes, types []string, namespaces map[string]string) []string {

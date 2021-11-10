@@ -421,14 +421,14 @@ type AudioSourceConfiguration struct {
 
 type VideoEncoderConfiguration struct {
 	ConfigurationEntity
-	Encoding       *VideoEncoding          `xml:"trt:Encoding,omitempty"`
-	Resolution     *VideoResolution        `xml:"trt:Resolution,omitempty"`
-	Quality        float64                 `xml:"trt:Quality,omitempty"`
-	RateControl    *VideoRateControl       `xml:"trt:RateControl,omitempty"`
-	MPEG4          *Mpeg4Configuration     `xml:"trt:MPEG4,omitempty"`
-	H264           *H264Configuration      `xml:"trt:H264,omitempty"`
-	Multicast      *MulticastConfiguration `xml:"trt:Multicast,omitempty"`
-	SessionTimeout *xsd.Duration           `xml:"trt:SessionTimeout,omitempty"`
+	Encoding       *VideoEncoding          `xml:"Encoding,omitempty"`
+	Resolution     *VideoResolution        `xml:"Resolution,omitempty"`
+	Quality        float64                 `xml:"Quality,omitempty"`
+	RateControl    *VideoRateControl       `xml:"RateControl,omitempty"`
+	MPEG4          *Mpeg4Configuration     `xml:"MPEG4,omitempty"`
+	H264           *H264Configuration      `xml:"H264,omitempty"`
+	Multicast      *MulticastConfiguration `xml:"Multicast,omitempty"`
+	SessionTimeout *xsd.Duration           `xml:"SessionTimeout,omitempty"`
 }
 
 type VideoEncoding xsd.String
@@ -1201,10 +1201,10 @@ type RemoteUser struct {
 }
 
 type User struct {
-	Username  string        `xml:"Username"`
-	Password  string        `xml:"Password"`
-	UserLevel UserLevel     `xml:"UserLevel"`
-	Extension UserExtension `xml:"Extension"`
+	Username  string         `json:",omitempty" xml:",omitempty"`
+	Password  string         `json:",omitempty" xml:",omitempty"`
+	UserLevel *UserLevel     `json:",omitempty" xml:",omitempty"`
+	Extension *UserExtension `json:",omitempty" xml:",omitempty"`
 }
 
 type UserLevel xsd.String
