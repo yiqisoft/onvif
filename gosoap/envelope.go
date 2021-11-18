@@ -2,6 +2,7 @@ package gosoap
 
 import (
 	"encoding/xml"
+	"fmt"
 )
 
 type SOAPEnvelope struct {
@@ -26,9 +27,9 @@ type SOAPBody struct {
 type SOAPFault struct {
 	XMLName xml.Name `xml:"http://www.w3.org/2003/05/soap-envelope Fault"`
 
-	Code   *SOAPFaultCode   `xml:",omitempty"`
-	Reason *SOAPFaultReason `xml:",omitempty"`
-	Detail *SOAPFaultDetail `xml:",omitempty"`
+	Code   SOAPFaultCode   `xml:",omitempty"`
+	Reason SOAPFaultReason `xml:",omitempty"`
+	Detail SOAPFaultDetail `xml:",omitempty"`
 }
 
 // UnmarshalXML the response body
@@ -85,8 +86,12 @@ Loop:
 }
 
 type SOAPFaultCode struct {
-	Value   string         `xml:"Value"`
-	Subcode *SOAPFaultCode `xml:"Subcode,omitempty"`
+	Value   string           `xml:"Value"`
+	Subcode SOAPFaultSubCode `xml:"Subcode,omitempty"`
+}
+
+type SOAPFaultSubCode struct {
+	Value string `xml:"Value"`
 }
 
 type SOAPFaultReason struct {
@@ -95,6 +100,11 @@ type SOAPFaultReason struct {
 
 type SOAPFaultDetail struct {
 	Text string `xml:"Text"`
+}
+
+func (fault *SOAPFault) String() string {
+	return fmt.Sprintf("fault reason: %s, fault detail: %s, fault code: %v %v",
+		fault.Reason.Text, fault.Detail.Text, fault.Code.Value, fault.Code.Subcode.Value)
 }
 
 func NewSOAPEnvelope(content interface{}) *SOAPEnvelope {

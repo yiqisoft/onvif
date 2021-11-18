@@ -1,9 +1,9 @@
 package onvif
 
 import (
+	"bytes"
 	"encoding/xml"
 	"errors"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -14,7 +14,7 @@ import (
 	"github.com/IOTechSystems/onvif/device"
 	"github.com/IOTechSystems/onvif/gosoap"
 	"github.com/IOTechSystems/onvif/networking"
-	wsdiscovery "github.com/IOTechSystems/onvif/ws-discovery"
+
 	"github.com/beevik/etree"
 )
 
@@ -46,6 +46,8 @@ const (
 	NVS
 	NVA
 	NVT
+
+	ContentType = "Content-Type"
 )
 
 func (devType DeviceType) String() string {
@@ -77,9 +79,10 @@ type DeviceInfo struct {
 //struct represents an abstract ONVIF device.
 //It contains methods, which helps to communicate with ONVIF device
 type Device struct {
-	params    DeviceParams
-	endpoints map[string]string
-	info      DeviceInfo
+	params       DeviceParams
+	endpoints    map[string]string
+	info         DeviceInfo
+	digestClient *DigestClient
 }
 
 type DeviceParams struct {
@@ -87,6 +90,7 @@ type DeviceParams struct {
 	Username   string
 	Password   string
 	HttpClient *http.Client
+	AuthMode   string
 }
 
 //GetServices return available endpoints
@@ -105,53 +109,6 @@ func readResponse(resp *http.Response) string {
 		panic(err)
 	}
 	return string(b)
-}
-
-//GetAvailableDevicesAtSpecificEthernetInterface ...
-func GetAvailableDevicesAtSpecificEthernetInterface(interfaceName string) []Device {
-	/*
-		Call an ws-discovery Probe Message to Discover NVT type Devices
-	*/
-	devices := wsdiscovery.SendProbe(interfaceName, nil, []string{"dn:" + NVT.String()}, map[string]string{"dn": "http://www.onvif.org/ver10/network/wsdl"})
-	nvtDevices := make([]Device, 0)
-
-	for _, j := range devices {
-		doc := etree.NewDocument()
-		if err := doc.ReadFromString(j); err != nil {
-			fmt.Errorf("%s", err.Error())
-			return nil
-		}
-
-		endpoints := doc.Root().FindElements("./Body/ProbeMatches/ProbeMatch/XAddrs")
-		for _, xaddr := range endpoints {
-			xaddr := strings.Split(strings.Split(xaddr.Text(), " ")[0], "/")[2]
-			fmt.Println(xaddr)
-			c := 0
-
-			for c = 0; c < len(nvtDevices); c++ {
-				if nvtDevices[c].params.Xaddr == xaddr {
-					fmt.Println(nvtDevices[c].params.Xaddr, "==", xaddr)
-					break
-				}
-			}
-
-			if c < len(nvtDevices) {
-				continue
-			}
-
-			dev, err := NewDevice(DeviceParams{Xaddr: strings.Split(xaddr, " ")[0]})
-
-			if err != nil {
-				fmt.Println("Error", xaddr)
-				fmt.Println(err)
-				continue
-			} else {
-				nvtDevices = append(nvtDevices, *dev)
-			}
-		}
-	}
-
-	return nvtDevices
 }
 
 func (dev *Device) getSupportedServices(resp *http.Response) {
@@ -179,6 +136,7 @@ func NewDevice(params DeviceParams) (*Device, error) {
 	if dev.params.HttpClient == nil {
 		dev.params.HttpClient = new(http.Client)
 	}
+	dev.digestClient = NewDigestClient(dev.params.HttpClient, dev.params.Username, dev.params.Password)
 
 	getCapabilities := device.GetCapabilities{Category: "All"}
 
@@ -211,7 +169,7 @@ func (dev *Device) GetEndpoint(name string) string {
 	return dev.endpoints[name]
 }
 
-func (dev Device) buildMethodSOAP(msg string) (gosoap.SoapMessage, error) {
+func (dev *Device) buildMethodSOAP(msg string) (gosoap.SoapMessage, error) {
 	doc := etree.NewDocument()
 	if err := doc.ReadFromString(msg); err != nil {
 		//log.Println("Got error")
@@ -227,7 +185,7 @@ func (dev Device) buildMethodSOAP(msg string) (gosoap.SoapMessage, error) {
 }
 
 //getEndpoint functions get the target service endpoint in a better way
-func (dev Device) getEndpoint(endpoint string) (string, error) {
+func (dev *Device) getEndpoint(endpoint string) (string, error) {
 
 	// common condition, endpointMark in map we use this.
 	if endpointURL, bFound := dev.endpoints[endpoint]; bFound {
@@ -249,7 +207,7 @@ func (dev Device) getEndpoint(endpoint string) (string, error) {
 
 //CallMethod functions call an method, defined <method> struct.
 //You should use Authenticate method to call authorized requests.
-func (dev Device) CallMethod(method interface{}) (*http.Response, error) {
+func (dev *Device) CallMethod(method interface{}) (*http.Response, error) {
 	pkgPath := strings.Split(reflect.TypeOf(method).PkgPath(), "/")
 	pkg := strings.ToLower(pkgPath[len(pkgPath)-1])
 
@@ -261,7 +219,7 @@ func (dev Device) CallMethod(method interface{}) (*http.Response, error) {
 }
 
 //CallMethod functions call an method, defined <method> struct with authentication data
-func (dev Device) callMethodDo(endpoint string, method interface{}) (*http.Response, error) {
+func (dev *Device) callMethodDo(endpoint string, method interface{}) (*http.Response, error) {
 	output, err := xml.MarshalIndent(method, "  ", "    ")
 	if err != nil {
 		return nil, err
@@ -287,7 +245,7 @@ func (dev *Device) GetDeviceParams() DeviceParams {
 	return dev.params
 }
 
-func (dev Device) GetEndpointByRequestStruct(requestStruct interface{}) (string, error) {
+func (dev *Device) GetEndpointByRequestStruct(requestStruct interface{}) (string, error) {
 	pkgPath := strings.Split(reflect.TypeOf(requestStruct).Elem().PkgPath(), "/")
 	pkg := strings.ToLower(pkgPath[len(pkgPath)-1])
 
@@ -296,4 +254,33 @@ func (dev Device) GetEndpointByRequestStruct(requestStruct interface{}) (string,
 		return "", err
 	}
 	return endpoint, err
+}
+
+func (dev *Device) SendSoap(endpoint string, xmlRequestBody string) (resp *http.Response, err error) {
+	soap := gosoap.NewEmptySOAP()
+	soap.AddStringBodyContent(xmlRequestBody)
+	soap.AddRootNamespaces(Xlmns)
+	if dev.params.AuthMode == UsernameTokenAuth || dev.params.AuthMode == Both {
+		soap.AddWSSecurity(dev.params.Username, dev.params.Password)
+	}
+
+	if dev.params.AuthMode == DigestAuth || dev.params.AuthMode == Both {
+		resp, err = dev.digestClient.Do(endpoint, soap.String())
+	} else {
+		req, err := createHttpRequest(endpoint, soap.String())
+		if err != nil {
+			return nil, err
+		}
+		resp, err = dev.params.HttpClient.Do(req)
+	}
+	return resp, err
+}
+
+func createHttpRequest(endpoint string, soap string) (req *http.Request, err error) {
+	req, err = http.NewRequest(http.MethodPost, endpoint, bytes.NewBufferString(soap))
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set(ContentType, "application/soap+xml; charset=utf-8")
+	return req, nil
 }

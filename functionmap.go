@@ -23,6 +23,18 @@ var DeviceFunctionMap = map[string]Function{
 	SetSystemDateAndTime:    &device.SetSystemDateAndTimeFunction{},
 	SetSystemFactoryDefault: &device.SetSystemFactoryDefaultFunction{},
 	SystemReboot:            &device.SystemRebootFunction{},
+	// User Handling
+	GetUsers:    &device.GetUsersFunction{},
+	SetUser:     &device.SetUserFunction{},
+	CreateUsers: &device.CreateUsersFunction{},
+	DeleteUsers: &device.DeleteUsersFunction{},
+	// Auto Discovery
+	GetDiscoveryMode: &device.GetDiscoveryModeFunction{},
+	SetDiscoveryMode: &device.SetDiscoveryModeFunction{},
+	GetScopes:        &device.GetScopesFunction{},
+	SetScopes:        &device.SetScopesFunction{},
+	AddScopes:        &device.AddScopesFunction{},
+	RemoveScopes:     &device.RemoveScopesFunction{},
 }
 
 var MediaFunctionMap = map[string]Function{
