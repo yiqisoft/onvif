@@ -529,27 +529,34 @@ type RuleEngineConfiguration struct {
 type RuleEngineConfigurationExtension xsd.AnyType
 
 type PTZConfiguration struct {
-	ConfigurationEntity
-	MoveRamp                               int                        `xml:"MoveRamp,attr,omitempty"`
-	PresetRamp                             int                        `xml:"PresetRamp,attr,omitempty"`
-	PresetTourRamp                         int                        `xml:"PresetTourRamp,attr,omitempty"`
-	NodeToken                              *ReferenceToken            `xml:"NodeToken,omitempty"`
-	DefaultAbsolutePantTiltPositionSpace   *xsd.AnyURI                `xml:"DefaultAbsolutePantTiltPositionSpace,omitempty"`
-	DefaultAbsoluteZoomPositionSpace       *xsd.AnyURI                `xml:"DefaultAbsoluteZoomPositionSpace,omitempty"`
-	DefaultRelativePanTiltTranslationSpace *xsd.AnyURI                `xml:"DefaultRelativePanTiltTranslationSpace,omitempty"`
-	DefaultRelativeZoomTranslationSpace    *xsd.AnyURI                `xml:"DefaultRelativeZoomTranslationSpace,omitempty"`
-	DefaultContinuousPanTiltVelocitySpace  *xsd.AnyURI                `xml:"DefaultContinuousPanTiltVelocitySpace,omitempty"`
-	DefaultContinuousZoomVelocitySpace     *xsd.AnyURI                `xml:"DefaultContinuousZoomVelocitySpace,omitempty"`
-	DefaultPTZSpeed                        *PTZSpeed                  `xml:"DefaultPTZSpeed,omitempty"`
-	DefaultPTZTimeout                      *xsd.Duration              `xml:"DefaultPTZTimeout,omitempty"`
-	PanTiltLimits                          *PanTiltLimits             `xml:"PanTiltLimits,omitempty"`
-	ZoomLimits                             *ZoomLimits                `xml:"ZoomLimits,omitempty"`
-	Extension                              *PTZConfigurationExtension `xml:"Extension,omitempty"`
+	PTZConfigurationEntity
+	Token                                  ReferenceToken             `xml:"token,attr"`
+	MoveRamp                               int                        `json:",omitempty" xml:"MoveRamp,attr,omitempty"`
+	PresetRamp                             int                        `json:",omitempty" xml:"PresetRamp,attr,omitempty"`
+	PresetTourRamp                         int                        `json:",omitempty" xml:"PresetTourRamp,attr,omitempty"`
+	NodeToken                              *ReferenceToken            `json:",omitempty" xml:"tptz:NodeToken,omitempty"`
+	DefaultAbsolutePantTiltPositionSpace   *xsd.AnyURI                `json:",omitempty" xml:",omitempty"`
+	DefaultAbsoluteZoomPositionSpace       *xsd.AnyURI                `json:",omitempty" xml:",omitempty"`
+	DefaultRelativePanTiltTranslationSpace *xsd.AnyURI                `json:",omitempty" xml:",omitempty"`
+	DefaultRelativeZoomTranslationSpace    *xsd.AnyURI                `json:",omitempty" xml:",omitempty"`
+	DefaultContinuousPanTiltVelocitySpace  *xsd.AnyURI                `json:",omitempty" xml:",omitempty"`
+	DefaultContinuousZoomVelocitySpace     *xsd.AnyURI                `json:",omitempty" xml:",omitempty"`
+	DefaultPTZSpeed                        *PTZSpeed                  `json:",omitempty" xml:",omitempty"`
+	DefaultPTZTimeout                      *xsd.Duration              `json:",omitempty" xml:",omitempty"`
+	PanTiltLimits                          *PanTiltLimits             `json:",omitempty" xml:",omitempty"`
+	ZoomLimits                             *ZoomLimits                `json:",omitempty" xml:",omitempty"`
+	Extension                              *PTZConfigurationExtension `json:",omitempty" xml:",omitempty"`
+}
+
+type PTZConfigurationEntity struct {
+	Token    ReferenceToken `json:",omitempty" xml:"token,attr,omitempty"`
+	Name     Name           `json:",omitempty" xml:"tptz:Name,omitempty"`
+	UseCount int            `json:",omitempty" xml:"tptz:UseCount,omitempty"`
 }
 
 type PTZSpeed struct {
-	PanTilt *Vector2D `xml:"PanTilt,omitempty"`
-	Zoom    *Vector1D `xml:"Zoom,omitempty"`
+	PanTilt *Vector2D `json:",omitempty" xml:"onvif:PanTilt,omitempty"`
+	Zoom    *Vector1D `json:",omitempty" xml:"onvif:Zoom,omitempty"`
 }
 
 type Vector2D struct {
@@ -922,14 +929,14 @@ type OSDConfigurationOptionsExtension xsd.AnyType
 
 type PTZNode struct {
 	DeviceEntity
-	FixedHomePosition      xsd.Boolean `xml:"FixedHomePosition,attr"`
-	GeoMove                xsd.Boolean `xml:"GeoMove,attr"`
-	Name                   Name
-	SupportedPTZSpaces     PTZSpaces
-	MaximumNumberOfPresets int
-	HomeSupported          xsd.Boolean
-	AuxiliaryCommands      AuxiliaryData
-	Extension              PTZNodeExtension
+	FixedHomePosition      *xsd.Boolean      `json:",omitempty" xml:",attr,omitempty"`
+	GeoMove                *xsd.Boolean      `json:",omitempty" xml:",attr,omitempty"`
+	Name                   *Name             `json:",omitempty" xml:",omitempty"`
+	SupportedPTZSpaces     *PTZSpaces        `json:",omitempty" xml:",omitempty"`
+	MaximumNumberOfPresets int               `json:",omitempty" xml:",omitempty"`
+	HomeSupported          *xsd.Boolean      `json:",omitempty" xml:",omitempty"`
+	AuxiliaryCommands      *AuxiliaryData    `json:",omitempty" xml:",omitempty"`
+	Extension              *PTZNodeExtension `json:",omitempty" xml:",omitempty"`
 }
 
 type PTZSpaces struct {
@@ -966,11 +973,11 @@ type PTZPresetTourSupportedExtension xsd.AnyType
 type PTZNodeExtension2 xsd.AnyType
 
 type PTZConfigurationOptions struct {
-	PTZRamps           IntAttrList `xml:"PTZRamps,attr"`
-	Spaces             PTZSpaces
-	PTZTimeout         DurationRange
-	PTControlDirection PTControlDirectionOptions
-	Extension          PTZConfigurationOptions2
+	PTZRamps           *IntAttrList               `json:",omitempty" xml:",attr,omitempty"`
+	Spaces             *PTZSpaces                 `json:",omitempty" xml:",omitempty"`
+	PTZTimeout         *DurationRange             `json:",omitempty" xml:",omitempty"`
+	PTControlDirection *PTControlDirectionOptions `json:",omitempty" xml:",omitempty"`
+	Extension          *PTZConfigurationOptions2  `json:",omitempty" xml:",omitempty"`
 }
 
 type IntAttrList struct {
@@ -1013,20 +1020,20 @@ type PTZPreset struct {
 }
 
 type PTZVector struct {
-	PanTilt Vector2D `xml:"PanTilt"`
-	Zoom    Vector1D `xml:"Zoom"`
+	PanTilt *Vector2D `json:",omitempty" xml:"PanTilt,omitempty"`
+	Zoom    *Vector1D `json:",omitempty" xml:"Zoom,omitempty"`
 }
 
 type PTZStatus struct {
-	Position   PTZVector
-	MoveStatus PTZMoveStatus
-	Error      string
-	UtcTime    xsd.DateTime
+	Position   PTZVector     `json:",omitempty" xml:",omitempty"`
+	MoveStatus PTZMoveStatus `json:",omitempty" xml:",omitempty"`
+	Error      string        `json:",omitempty" xml:",omitempty"`
+	UtcTime    string        `json:",omitempty" xml:",omitempty"`
 }
 
 type PTZMoveStatus struct {
-	PanTilt MoveStatus
-	Zoom    MoveStatus
+	PanTilt string `json:",omitempty" xml:",omitempty"`
+	Zoom    string `json:",omitempty" xml:",omitempty"`
 }
 
 type MoveStatus struct {
