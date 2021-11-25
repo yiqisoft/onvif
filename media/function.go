@@ -119,3 +119,23 @@ func (function *GetVideoEncoderConfigurationOptionsFunction) Request() interface
 func (function *GetVideoEncoderConfigurationOptionsFunction) Response() interface{} {
 	return &GetVideoEncoderConfigurationOptionsResponse{}
 }
+
+type AddPTZConfigurationFunction struct{}
+
+func (function *AddPTZConfigurationFunction) Request() interface{} {
+	return &AddPTZConfiguration{}
+}
+
+func (function *AddPTZConfigurationFunction) Response() interface{} {
+	return &AddPTZConfigurationResponse{}
+}
+
+type RemovePTZConfigurationFunction struct{}
+
+func (function *RemovePTZConfigurationFunction) Request() interface{} {
+	return &RemovePTZConfiguration{}
+}
+
+func (function *RemovePTZConfigurationFunction) Response() interface{} {
+	return &RemovePTZConfigurationResponse{}
+}

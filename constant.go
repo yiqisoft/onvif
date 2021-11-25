@@ -55,6 +55,28 @@ const (
 	GetVideoEncoderConfiguration        = "GetVideoEncoderConfiguration"
 	SetVideoEncoderConfiguration        = "SetVideoEncoderConfiguration"
 	GetVideoEncoderConfigurationOptions = "GetVideoEncoderConfigurationOptions"
+
+	// WebService - PTZ
+	GetNodes                = "GetNodes"
+	GetNode                 = "GetNode"
+	GetConfigurations       = "GetConfigurations"
+	GetConfiguration        = "GetConfiguration"
+	GetConfigurationOptions = "GetConfigurationOptions"
+	SetConfiguration        = "SetConfiguration"
+	AddPTZConfiguration     = "AddPTZConfiguration"
+	RemovePTZConfiguration  = "RemovePTZConfiguration"
+	AbsoluteMove            = "AbsoluteMove"
+	RelativeMove            = "RelativeMove"
+	ContinuousMove          = "ContinuousMove"
+	Stop                    = "Stop"
+	GetStatus               = "GetStatus"
+	SetPreset               = "SetPreset"
+	GetPresets              = "GetPresets"
+	GotoPreset              = "GotoPreset"
+	RemovePreset            = "RemovePreset"
+	GotoHomePosition        = "GotoHomePosition"
+	SetHomePosition         = "SetHomePosition"
+	SendAuxiliaryCommand    = "SendAuxiliaryCommand"
 )
 
 // Onvif Auth Mode

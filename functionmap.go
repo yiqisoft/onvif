@@ -3,6 +3,7 @@ package onvif
 import (
 	"github.com/IOTechSystems/onvif/device"
 	"github.com/IOTechSystems/onvif/media"
+	"github.com/IOTechSystems/onvif/ptz"
 )
 
 var DeviceFunctionMap = map[string]Function{
@@ -46,9 +47,41 @@ var MediaFunctionMap = map[string]Function{
 	SetMetadataConfiguration:            &media.SetMetadataConfigurationFunction{},
 	GetCompatibleMetadataConfigurations: &media.GetCompatibleMetadataConfigurationsFunction{},
 	GetMetadataConfigurationOptions:     &media.GetMetadataConfigurationOptionsFunction{},
-	GetProfiles:                         &media.GetProfilesFunction{},
-	GetStreamUri:                        &media.GetStreamUriFunction{},
+	// Video Streaming
+	GetProfiles:  &media.GetProfilesFunction{},
+	GetStreamUri: &media.GetStreamUriFunction{},
+	// Video Encoder Configuration
 	GetVideoEncoderConfiguration:        &media.GetVideoEncoderConfigurationFunction{},
 	SetVideoEncoderConfiguration:        &media.SetVideoEncoderConfigurationFunction{},
 	GetVideoEncoderConfigurationOptions: &media.GetVideoEncoderConfigurationOptionsFunction{},
+	// PTZ Configuration
+	AddPTZConfiguration:    &media.AddPTZConfigurationFunction{},
+	RemovePTZConfiguration: &media.RemovePTZConfigurationFunction{},
+}
+
+var PTZFunctionMap = map[string]Function{
+	// PTZ Capabilities
+	GetNodes: &ptz.GetNodesFunction{},
+	GetNode:  &ptz.GetNodeFunction{},
+	// PTZ Configuration
+	GetConfigurations:       &ptz.GetConfigurationsFunction{},
+	GetConfiguration:        &ptz.GetConfigurationFunction{},
+	GetConfigurationOptions: &ptz.GetConfigurationOptionsFunction{},
+	SetConfiguration:        &ptz.SetConfigurationFunction{},
+	// PTZ Actuation
+	AbsoluteMove:   &ptz.AbsoluteMoveFunction{},
+	RelativeMove:   &ptz.RelativeMoveFunction{},
+	ContinuousMove: &ptz.ContinuousMoveFunction{},
+	Stop:           &ptz.StopFunction{},
+	GetStatus:      &ptz.GetStatusFunction{},
+	// PTZ Preset
+	SetPreset:    &ptz.SetPresetFunction{},
+	GetPresets:   &ptz.GetPresetsFunction{},
+	GotoPreset:   &ptz.GotoPresetFunction{},
+	RemovePreset: &ptz.RemovePresetFunction{},
+	// PTZ Home Position
+	GotoHomePosition: &ptz.GotoHomePositionFunction{},
+	SetHomePosition:  &ptz.SetHomePositionFunction{},
+	// PTZ Auxiliary Operations
+	SendAuxiliaryCommand: &ptz.SendAuxiliaryCommandFunction{},
 }

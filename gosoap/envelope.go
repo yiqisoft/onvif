@@ -91,7 +91,8 @@ type SOAPFaultCode struct {
 }
 
 type SOAPFaultSubCode struct {
-	Value string `xml:"Value"`
+	Value   string            `xml:"Value"`
+	Subcode *SOAPFaultSubCode `xml:"Subcode,omitempty"`
 }
 
 type SOAPFaultReason struct {
@@ -103,8 +104,12 @@ type SOAPFaultDetail struct {
 }
 
 func (fault *SOAPFault) String() string {
-	return fmt.Sprintf("fault reason: %s, fault detail: %s, fault code: %v %v",
+	msg := fmt.Sprintf("fault reason: %s, fault detail: %s, fault code: %v %v ",
 		fault.Reason.Text, fault.Detail.Text, fault.Code.Value, fault.Code.Subcode.Value)
+	if fault.Code.Subcode.Subcode != nil {
+		msg += fault.Code.Subcode.Subcode.Value
+	}
+	return msg
 }
 
 func NewSOAPEnvelope(content interface{}) *SOAPEnvelope {

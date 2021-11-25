@@ -28,7 +28,7 @@ type GetNodes struct {
 }
 
 type GetNodesResponse struct {
-	PTZNode onvif.PTZNode
+	PTZNode []onvif.PTZNode
 }
 
 type GetNode struct {
@@ -41,8 +41,8 @@ type GetNodeResponse struct {
 }
 
 type GetConfiguration struct {
-	XMLName      string               `xml:"tptz:GetConfiguration"`
-	ProfileToken onvif.ReferenceToken `xml:"tptz:ProfileToken"`
+	XMLName               string               `xml:"tptz:GetConfiguration"`
+	PTZConfigurationToken onvif.ReferenceToken `xml:"tptz:PTZConfigurationToken"`
 }
 
 type GetConfigurationResponse struct {
@@ -54,7 +54,7 @@ type GetConfigurations struct {
 }
 
 type GetConfigurationsResponse struct {
-	PTZConfiguration onvif.PTZConfiguration
+	PTZConfiguration []onvif.PTZConfiguration
 }
 
 type SetConfiguration struct {
@@ -67,8 +67,8 @@ type SetConfigurationResponse struct {
 }
 
 type GetConfigurationOptions struct {
-	XMLName      string               `xml:"tptz:GetConfigurationOptions"`
-	ProfileToken onvif.ReferenceToken `xml:"tptz:ProfileToken"`
+	XMLName            string               `xml:"tptz:GetConfigurationOptions"`
+	ConfigurationToken onvif.ReferenceToken `xml:"tptz:ConfigurationToken"`
 }
 
 type GetConfigurationOptionsResponse struct {
@@ -91,14 +91,14 @@ type GetPresets struct {
 }
 
 type GetPresetsResponse struct {
-	Preset onvif.PTZPreset
+	Preset []onvif.PTZPreset
 }
 
 type SetPreset struct {
-	XMLName      string               `xml:"tptz:SetPreset"`
-	ProfileToken onvif.ReferenceToken `xml:"tptz:ProfileToken"`
-	PresetName   xsd.String           `xml:"tptz:PresetName"`
-	PresetToken  onvif.ReferenceToken `xml:"tptz:PresetToken"`
+	XMLName      string                `xml:"tptz:SetPreset"`
+	ProfileToken *onvif.ReferenceToken `xml:"tptz:ProfileToken,omitempty"`
+	PresetName   *xsd.String           `xml:"tptz:PresetName,omitempty"`
+	PresetToken  *onvif.ReferenceToken `xml:"tptz:PresetToken,omitempty"`
 }
 
 type SetPresetResponse struct {
@@ -115,19 +115,19 @@ type RemovePresetResponse struct {
 }
 
 type GotoPreset struct {
-	XMLName      string               `xml:"tptz:GotoPreset"`
-	ProfileToken onvif.ReferenceToken `xml:"tptz:ProfileToken"`
-	PresetToken  onvif.ReferenceToken `xml:"tptz:PresetToken"`
-	Speed        onvif.PTZSpeed       `xml:"tptz:Speed"`
+	XMLName      string                `xml:"tptz:GotoPreset,omitempty"`
+	ProfileToken *onvif.ReferenceToken `xml:"tptz:ProfileToken,omitempty"`
+	PresetToken  *onvif.ReferenceToken `xml:"tptz:PresetToken,omitempty"`
+	Speed        *onvif.PTZSpeed       `xml:"tptz:Speed,omitempty"`
 }
 
 type GotoPresetResponse struct {
 }
 
 type GotoHomePosition struct {
-	XMLName      string               `xml:"tptz:GotoHomePosition"`
-	ProfileToken onvif.ReferenceToken `xml:"tptz:ProfileToken"`
-	Speed        onvif.PTZSpeed       `xml:"tptz:Speed"`
+	XMLName      string                `xml:"tptz:GotoHomePosition"`
+	ProfileToken *onvif.ReferenceToken `xml:"tptz:ProfileToken,omitempty"`
+	Speed        *onvif.PTZSpeed       `xml:"tptz:Speed,omitempty"`
 }
 
 type GotoHomePositionResponse struct {
@@ -142,10 +142,10 @@ type SetHomePositionResponse struct {
 }
 
 type ContinuousMove struct {
-	XMLName      string               `xml:"tptz:ContinuousMove"`
-	ProfileToken onvif.ReferenceToken `xml:"tptz:ProfileToken"`
-	Velocity     onvif.PTZSpeed       `xml:"tptz:Velocity"`
-	Timeout      xsd.Duration         `xml:"tptz:Timeout"`
+	XMLName      string                `xml:"tptz:ContinuousMove"`
+	ProfileToken *onvif.ReferenceToken `xml:"tptz:ProfileToken,omitempty"`
+	Velocity     *onvif.PTZSpeed       `xml:"tptz:Velocity,omitempty"`
+	Timeout      *xsd.Duration         `xml:"tptz:Timeout,omitempty"`
 }
 
 type ContinuousMoveResponse struct {
@@ -173,8 +173,18 @@ type GetStatusResponse struct {
 type AbsoluteMove struct {
 	XMLName      string               `xml:"tptz:AbsoluteMove"`
 	ProfileToken onvif.ReferenceToken `xml:"tptz:ProfileToken"`
-	Position     onvif.PTZVector      `xml:"tptz:Position"`
-	Speed        onvif.PTZSpeed       `xml:"tptz:Speed"`
+	Position     Vector               `xml:"tptz:Position"`
+	Speed        Speed                `xml:"tptz:Speed"`
+}
+
+type Vector struct {
+	PanTilt *onvif.Vector2D `json:",omitempty" xml:"onvif:PanTilt,omitempty"`
+	Zoom    *onvif.Vector1D `json:",omitempty" xml:"onvif:Zoom,omitempty"`
+}
+
+type Speed struct {
+	PanTilt *onvif.Vector2D `json:",omitempty" xml:"onvif:PanTilt,omitempty"`
+	Zoom    *onvif.Vector1D `json:",omitempty" xml:"onvif:Zoom,omitempty"`
 }
 
 type AbsoluteMoveResponse struct {
