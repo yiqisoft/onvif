@@ -1,7 +1,9 @@
 package onvif
 
 import (
+	"fmt"
 	"github.com/IOTechSystems/onvif/device"
+	"github.com/IOTechSystems/onvif/event"
 	"github.com/IOTechSystems/onvif/media"
 	"github.com/IOTechSystems/onvif/ptz"
 )
@@ -84,4 +86,43 @@ var PTZFunctionMap = map[string]Function{
 	SetHomePosition:  &ptz.SetHomePositionFunction{},
 	// PTZ Auxiliary Operations
 	SendAuxiliaryCommand: &ptz.SendAuxiliaryCommandFunction{},
+}
+
+var EventFunctionMap = map[string]Function{
+	GetEventProperties:          &event.GetEventPropertiesFunction{},
+	CreatePullPointSubscription: &event.CreatePullPointSubscriptionFunction{},
+	PullMessages:                &event.PullMessagesFunction{},
+	Unsubscribe:                 &event.UnsubscribeFunction{},
+	Subscribe:                   &event.SubscribeFunction{},
+	Renew:                       &event.RenewFunction{},
+}
+
+func FunctionByServiceAndFunctionName(serviceName, functionName string) (Function, error) {
+	var function Function
+	var exist bool
+	switch serviceName {
+	case DeviceWebService:
+		function, exist = DeviceFunctionMap[functionName]
+		if !exist {
+			return nil, fmt.Errorf("the web service '%s'not support the function '%s'", serviceName, functionName)
+		}
+	case MediaWebService:
+		function, exist = MediaFunctionMap[functionName]
+		if !exist {
+			return nil, fmt.Errorf("the web service '%s' not support the function '%s'", serviceName, functionName)
+		}
+	case PTZWebService:
+		function, exist = PTZFunctionMap[functionName]
+		if !exist {
+			return nil, fmt.Errorf("the web service '%s' not support the function '%s'", serviceName, functionName)
+		}
+	case EventWebService:
+		function, exist = EventFunctionMap[functionName]
+		if !exist {
+			return nil, fmt.Errorf("the web service '%s' not support the function '%s'", serviceName, functionName)
+		}
+	default:
+		return nil, fmt.Errorf("not support the web service '%s'", serviceName)
+	}
+	return function, nil
 }

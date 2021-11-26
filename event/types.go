@@ -1,6 +1,7 @@
 package event
 
 import (
+	"github.com/IOTechSystems/onvif/event/topic"
 	"github.com/IOTechSystems/onvif/xsd"
 )
 
@@ -37,9 +38,9 @@ type AbsoluteOrRelativeTimeType struct { //wsnt http://docs.oasis-open.org/wsn/b
 
 //EndpointReferenceType in ws-addr
 type EndpointReferenceType struct { //wsa http://www.w3.org/2005/08/addressing/ws-addr.xsd
-	Address             AttributedURIType        `xml:"wsnt:Address"`
-	ReferenceParameters *ReferenceParametersType `xml:"wsnt:ReferenceParameters"`
-	Metadata            *MetadataType            `xml:"wsnt:Metadata"`
+	Address             AttributedURIType `xml:"wsa:Address"`
+	ReferenceParameters *ReferenceParametersType
+	Metadata            *MetadataType `xml:"Metadata"`
 }
 
 // FilterType struct
@@ -70,8 +71,10 @@ type TopicSet TopicSetType //wstop http://docs.oasis-open.org/wsn/t-1.xsd
 
 //TopicSetType alias
 type TopicSetType struct { //wstop http://docs.oasis-open.org/wsn/t-1.xsd
-	ExtensibleDocumented
+	//ExtensibleDocumented
+
 	//here can be any element
+	RuleEngine *topic.RuleEngine `json:"tns:RuleEngine,omitempty" xml:",omitempty"`
 }
 
 //ExtensibleDocumented struct
@@ -91,7 +94,30 @@ type NotificationMessageHolderType struct {
 	SubscriptionReference SubscriptionReference //wsnt http://docs.oasis-open.org/wsn/b-2.xsd
 	Topic                 Topic
 	ProducerReference     ProducerReference
-	Message               Message
+	Message               MessageBody
+}
+
+type MessageBody struct {
+	Message MessageDescription
+}
+
+type MessageDescription struct {
+	PropertyOperation xsd.AnyType `xml:"PropertyOperation,attr"`
+	Source            Source      `json:",omitempty" xml:",omitempty"`
+	Data              Data        `json:",omitempty" xml:",omitempty"`
+}
+
+type Source struct {
+	SimpleItem []SimpleItem `json:",omitempty" xml:",omitempty"`
+}
+
+type Data struct {
+	SimpleItem []SimpleItem `json:",omitempty" xml:",omitempty"`
+}
+
+type SimpleItem struct {
+	Name  xsd.AnyType `xml:"Name,attr"`
+	Value xsd.AnyType `xml:"Value,attr"`
 }
 
 //NotificationMessage Alias
@@ -99,7 +125,6 @@ type NotificationMessage NotificationMessageHolderType //wsnt http://docs.oasis-
 
 //QueryExpressionType struct for wsnt:MessageContent
 type QueryExpressionType struct { //wsnt http://docs.oasis-open.org/wsn/b-2.xsd
-	Dialect     xsd.AnyURI `xml:"Dialect,attr"`
 	MessageKind xsd.String `xml:",chardata"` // boolean(ncex:Producer="15")
 }
 
@@ -111,7 +136,6 @@ type QueryExpression QueryExpressionType
 
 //TopicExpressionType struct for wsnt:TopicExpression
 type TopicExpressionType struct { //wsnt http://docs.oasis-open.org/wsn/b-2.xsd
-	Dialect    xsd.AnyURI `xml:"Dialect,attr"`
 	TopicKinds xsd.String `xml:",chardata"`
 }
 
