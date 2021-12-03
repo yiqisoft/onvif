@@ -2,8 +2,10 @@ package onvif
 
 import (
 	"bytes"
+	"encoding/json"
 	"encoding/xml"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -283,4 +285,75 @@ func createHttpRequest(endpoint string, soap string) (req *http.Request, err err
 	}
 	req.Header.Set(ContentType, "application/soap+xml; charset=utf-8")
 	return req, nil
+}
+
+func (dev *Device) CallOnvifFunction(serviceName, functionName string, data []byte) (interface{}, error) {
+	function, err := FunctionByServiceAndFunctionName(serviceName, functionName)
+	if err != nil {
+		return nil, err
+	}
+	request, err := createRequest(function, data)
+	if err != nil {
+		return nil, fmt.Errorf("fail to create '%s' request for the web service '%s', %v", functionName, serviceName, err)
+	}
+
+	endpoint, err := dev.GetEndpointByRequestStruct(request)
+	if err != nil {
+		return nil, err
+	}
+
+	requestBody, err := xml.Marshal(request)
+	if err != nil {
+		return nil, err
+	}
+	xmlRequestBody := string(requestBody)
+
+	servResp, err := dev.SendSoap(endpoint, xmlRequestBody)
+	if err != nil {
+		return nil, fmt.Errorf("fail to send the '%s' request for the web service '%s', %v", functionName, serviceName, err)
+	}
+	defer servResp.Body.Close()
+
+	rsp, err := ioutil.ReadAll(servResp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	responseEnvelope, err := createResponse(function, rsp)
+	if err != nil {
+		return nil, fmt.Errorf("fail to create '%s' response for the web service '%s', %v", functionName, serviceName, err)
+	}
+
+	if servResp.StatusCode == http.StatusUnauthorized {
+		return nil, fmt.Errorf("fail to verify the authentication for the function '%s' of web service '%s'. Onvif error: %s",
+			functionName, serviceName, responseEnvelope.Body.Fault.String())
+	} else if servResp.StatusCode == http.StatusBadRequest {
+		return nil, fmt.Errorf("invalid request for the function '%s' of web service '%s'. Onvif error: %s",
+			functionName, serviceName, responseEnvelope.Body.Fault.String())
+	} else if servResp.StatusCode > http.StatusNoContent {
+		return nil, fmt.Errorf("fail to execute the request for the function '%s' of web service '%s'. Onvif error: %s",
+			functionName, serviceName, responseEnvelope.Body.Fault.String())
+	}
+	return responseEnvelope.Body.Content, nil
+}
+
+func createRequest(function Function, data []byte) (interface{}, error) {
+	request := function.Request()
+	if len(data) > 0 {
+		err := json.Unmarshal(data, request)
+		if err != nil {
+			return nil, err
+		}
+	}
+	return request, nil
+}
+
+func createResponse(function Function, data []byte) (*gosoap.SOAPEnvelope, error) {
+	response := function.Response()
+	responseEnvelope := gosoap.NewSOAPEnvelope(response)
+	err := xml.Unmarshal(data, responseEnvelope)
+	if err != nil {
+		return nil, err
+	}
+	return responseEnvelope, nil
 }

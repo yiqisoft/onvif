@@ -154,8 +154,8 @@ type ContinuousMoveResponse struct {
 type RelativeMove struct {
 	XMLName      string               `xml:"tptz:RelativeMove"`
 	ProfileToken onvif.ReferenceToken `xml:"tptz:ProfileToken"`
-	Translation  onvif.PTZVector      `xml:"tptz:Translation"`
-	Speed        onvif.PTZSpeed       `xml:"tptz:Speed"`
+	Translation  Vector               `json:",omitempty" xml:"tptz:Translation,omitempty"`
+	Speed        Speed                `json:",omitempty" xml:"tptz:Speed,omitempty"`
 }
 
 type RelativeMoveResponse struct {

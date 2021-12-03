@@ -77,6 +77,14 @@ const (
 	GotoHomePosition        = "GotoHomePosition"
 	SetHomePosition         = "SetHomePosition"
 	SendAuxiliaryCommand    = "SendAuxiliaryCommand"
+
+	// WebService - Event
+	GetEventProperties          = "GetEventProperties"
+	CreatePullPointSubscription = "CreatePullPointSubscription"
+	PullMessages                = "PullMessages"
+	Unsubscribe                 = "Unsubscribe"
+	Subscribe                   = "Subscribe"
+	Renew                       = "Renew"
 )
 
 // Onvif Auth Mode
