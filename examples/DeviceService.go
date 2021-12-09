@@ -42,7 +42,7 @@ func main() {
 	systemDateAndTyme := device.GetSystemDateAndTime{}
 	getCapabilities := device.GetCapabilities{Category: "All"}
 	createUser := device.CreateUsers{
-		User: []onvif.User{
+		User: []onvif.UserRequest{
 			{
 				Username:  "TestUser",
 				Password:  "TestPassword",

@@ -131,12 +131,14 @@ type GetDeviceInformationResponse struct {
 	HardwareId      string
 }
 
+// SetSystemDateAndTime and its properties are defined in the Onvif specification:
+// https://www.onvif.org/ver10/device/wsdl/devicemgmt.wsdl#op.SetSystemDateAndTime
 type SetSystemDateAndTime struct {
-	XMLName         string                `xml:"tds:SetSystemDateAndTime"`
-	DateTimeType    onvif.SetDateTimeType `xml:"tds:DateTimeType"`
-	DaylightSavings xsd.Boolean           `xml:"tds:DaylightSavings"`
-	TimeZone        onvif.TimeZone        `xml:"tds:TimeZone"`
-	UTCDateTime     onvif.DateTime        `xml:"tds:UTCDateTime"`
+	XMLName         string                 `xml:"tds:SetSystemDateAndTime,omitempty"`
+	DateTimeType    *onvif.SetDateTimeType `xml:"tds:DateTimeType,omitempty"`
+	DaylightSavings *xsd.Boolean           `xml:"tds:DaylightSavings,omitempty"`
+	TimeZone        *onvif.TimeZone        `xml:"tds:TimeZone,omitempty"`
+	UTCDateTime     *onvif.DateTimeRequest `xml:"tds:UTCDateTime,omitempty"`
 }
 
 type SetSystemDateAndTimeResponse struct {
@@ -150,6 +152,8 @@ type GetSystemDateAndTimeResponse struct {
 	SystemDateAndTime onvif.SystemDateTime
 }
 
+// SetSystemFactoryDefault and its properties are defined in the Onvif specification:
+// https://www.onvif.org/ver10/device/wsdl/devicemgmt.wsdl#op.SetSystemFactoryDefault
 type SetSystemFactoryDefault struct {
 	XMLName        string                   `xml:"tds:SetSystemFactoryDefault"`
 	FactoryDefault onvif.FactoryDefaultType `xml:"tds:FactoryDefault"`
@@ -167,6 +171,8 @@ type UpgradeSystemFirmwareResponse struct {
 	Message string
 }
 
+// SystemReboot and its properties are defined in the Onvif specification:
+// https://www.onvif.org/ver10/device/wsdl/devicemgmt.wsdl#op.SystemReboot
 type SystemReboot struct {
 	XMLName string `xml:"tds:SystemReboot"`
 }
@@ -217,7 +223,8 @@ type GetScopesResponse struct {
 	Scopes []onvif.Scope
 }
 
-//TODO: one or more scopes
+// SetScopes and its properties are defined in the Onvif specification:
+// https://www.onvif.org/ver10/device/wsdl/devicemgmt.wsdl#op.SetScopes
 type SetScopes struct {
 	XMLName string       `xml:"tds:SetScopes"`
 	Scopes  []xsd.AnyURI `xml:"tds:Scopes"`
@@ -226,7 +233,8 @@ type SetScopes struct {
 type SetScopesResponse struct {
 }
 
-//TODO: list of scopes
+// AddScopes and its properties are defined in the Onvif specification:
+// https://www.onvif.org/ver10/device/wsdl/devicemgmt.wsdl#op.AddScopes
 type AddScopes struct {
 	XMLName   string       `xml:"tds:AddScopes"`
 	ScopeItem []xsd.AnyURI `xml:"tds:ScopeItem"`
@@ -235,16 +243,17 @@ type AddScopes struct {
 type AddScopesResponse struct {
 }
 
-//TODO: One or more repetitions
 type RemoveScopes struct {
 	XMLName   string       `xml:"tds:RemoveScopes"`
-	ScopeItem []xsd.AnyURI `xml:"ScopeItem"`
+	ScopeItem []xsd.AnyURI `xml:"tds:ScopeItem"`
 }
 
 type RemoveScopesResponse struct {
 	ScopeItem xsd.AnyURI
 }
 
+// GetDiscoveryMode and its properties are defined in the Onvif specification:
+// https://www.onvif.org/ver10/device/wsdl/devicemgmt.wsdl#op.GetDiscoveryMode
 type GetDiscoveryMode struct {
 	XMLName string `xml:"tds:GetDiscoveryMode"`
 }
@@ -253,6 +262,8 @@ type GetDiscoveryModeResponse struct {
 	DiscoveryMode onvif.DiscoveryMode
 }
 
+// SetDiscoveryMode and its properties are defined in the Onvif specification:
+// https://www.onvif.org/ver10/device/wsdl/devicemgmt.wsdl#op.SetDiscoveryMode
 type SetDiscoveryMode struct {
 	XMLName       string              `xml:"tds:SetDiscoveryMode"`
 	DiscoveryMode onvif.DiscoveryMode `xml:"tds:DiscoveryMode"`
@@ -325,16 +336,18 @@ type GetUsersResponse struct {
 	User []onvif.User
 }
 
-//TODO: List of users
+// CreateUsers and its properties are defined in the Onvif specification:
+// https://www.onvif.org/ver10/device/wsdl/devicemgmt.wsdl#op.CreateUsers
 type CreateUsers struct {
-	XMLName string       `xml:"tds:CreateUsers"`
-	User    []onvif.User `xml:"tds:User,omitempty"`
+	XMLName string              `xml:"tds:CreateUsers"`
+	User    []onvif.UserRequest `xml:"tds:User,omitempty"`
 }
 
 type CreateUsersResponse struct {
 }
 
-//TODO: one or more Username
+// DeleteUsers and its properties are defined in the Onvif specification:
+// https://www.onvif.org/ver10/device/wsdl/devicemgmt.wsdl#op.DeleteUsers
 type DeleteUsers struct {
 	XMLName  xsd.String   `xml:"tds:DeleteUsers"`
 	Username []xsd.String `xml:"tds:Username"`
@@ -343,9 +356,11 @@ type DeleteUsers struct {
 type DeleteUsersResponse struct {
 }
 
+// SetUser and its properties are defined in the Onvif specification:
+// https://www.onvif.org/ver10/device/wsdl/devicemgmt.wsdl#op.SetUser
 type SetUser struct {
-	XMLName string       `xml:"tds:SetUser"`
-	User    []onvif.User `xml:"tds:User"`
+	XMLName string              `xml:"tds:SetUser"`
+	User    []onvif.UserRequest `xml:"tds:User"`
 }
 
 type SetUserResponse struct {
@@ -469,12 +484,12 @@ type GetNetworkProtocols struct {
 }
 
 type GetNetworkProtocolsResponse struct {
-	NetworkProtocols []onvif.NetworkProtocol
+	NetworkProtocols []onvif.NetworkProtocolResponse
 }
 
 type SetNetworkProtocols struct {
-	XMLName          string                  `xml:"tds:SetNetworkProtocols"`
-	NetworkProtocols []onvif.NetworkProtocol `xml:"tds:NetworkProtocols"`
+	XMLName          string                         `xml:"tds:SetNetworkProtocols"`
+	NetworkProtocols []onvif.NetworkProtocolRequest `xml:"tds:NetworkProtocols"`
 }
 
 type SetNetworkProtocolsResponse struct {
@@ -490,8 +505,8 @@ type GetNetworkDefaultGatewayResponse struct {
 
 type SetNetworkDefaultGateway struct {
 	XMLName     string            `xml:"tds:SetNetworkDefaultGateway"`
-	IPv4Address onvif.IPv4Address `xml:"tds:IPv4Address"`
-	IPv6Address onvif.IPv6Address `xml:"tds:IPv6Address"`
+	IPv4Address onvif.IPv4Address `xml:"tds:IPv4Address,omitempty"`
+	IPv6Address onvif.IPv6Address `xml:"tds:IPv6Address,omitempty"`
 }
 
 type SetNetworkDefaultGatewayResponse struct {

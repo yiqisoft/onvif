@@ -100,6 +100,16 @@ func (function *GetVideoEncoderConfigurationFunction) Response() interface{} {
 	return &GetVideoEncoderConfigurationResponse{}
 }
 
+type GetVideoEncoderConfigurationsFunction struct{}
+
+func (function *GetVideoEncoderConfigurationsFunction) Request() interface{} {
+	return &GetVideoEncoderConfigurations{}
+}
+
+func (function *GetVideoEncoderConfigurationsFunction) Response() interface{} {
+	return &GetVideoEncoderConfigurationsResponse{}
+}
+
 type SetVideoEncoderConfigurationFunction struct{}
 
 func (function *SetVideoEncoderConfigurationFunction) Request() interface{} {

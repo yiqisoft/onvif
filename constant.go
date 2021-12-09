@@ -2,12 +2,12 @@ package onvif
 
 // Onvif WebService
 const (
-	CoreWebService      = "Core"
 	DeviceWebService    = "Device"
 	EventWebService     = "Event"
 	MediaWebService     = "Media"
-	StreamingWebService = "Streaming"
+	Media2WebService    = "Media2"
 	PTZWebService       = "PTZ"
+	AnalyticsWebService = "Analytics"
 )
 
 // Onvif WebService function
@@ -53,8 +53,14 @@ const (
 	GetProfiles                         = "GetProfiles"
 	GetStreamUri                        = "GetStreamUri"
 	GetVideoEncoderConfiguration        = "GetVideoEncoderConfiguration"
+	GetVideoEncoderConfigurations       = "GetVideoEncoderConfigurations"
 	SetVideoEncoderConfiguration        = "SetVideoEncoderConfiguration"
 	GetVideoEncoderConfigurationOptions = "GetVideoEncoderConfigurationOptions"
+
+	// WebService - Media2
+	GetAnalyticsConfigurations = "GetAnalyticsConfigurations"
+	AddConfiguration           = "AddConfiguration"
+	RemoveConfiguration        = "RemoveConfiguration"
 
 	// WebService - PTZ
 	GetNodes                = "GetNodes"
@@ -85,6 +91,21 @@ const (
 	Unsubscribe                 = "Unsubscribe"
 	Subscribe                   = "Subscribe"
 	Renew                       = "Renew"
+
+	// WebService - Analytics
+	GetSupportedAnalyticsModules = "GetSupportedAnalyticsModules"
+	GetAnalyticsModules          = "GetAnalyticsModules"
+	CreateAnalyticsModules       = "CreateAnalyticsModules"
+	DeleteAnalyticsModules       = "DeleteAnalyticsModules"
+	GetAnalyticsModuleOptions    = "GetAnalyticsModuleOptions"
+	ModifyAnalyticsModules       = "ModifyAnalyticsModules"
+
+	GetSupportedRules = "GetSupportedRules"
+	GetRules          = "GetRules"
+	CreateRules       = "CreateRules"
+	DeleteRules       = "DeleteRules"
+	GetRuleOptions    = "GetRuleOptions"
+	ModifyRules       = "ModifyRules"
 )
 
 // Onvif Auth Mode
