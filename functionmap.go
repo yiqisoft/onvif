@@ -2,9 +2,12 @@ package onvif
 
 import (
 	"fmt"
+
+	"github.com/IOTechSystems/onvif/analytics"
 	"github.com/IOTechSystems/onvif/device"
 	"github.com/IOTechSystems/onvif/event"
 	"github.com/IOTechSystems/onvif/media"
+	"github.com/IOTechSystems/onvif/media2"
 	"github.com/IOTechSystems/onvif/ptz"
 )
 
@@ -54,11 +57,19 @@ var MediaFunctionMap = map[string]Function{
 	GetStreamUri: &media.GetStreamUriFunction{},
 	// Video Encoder Configuration
 	GetVideoEncoderConfiguration:        &media.GetVideoEncoderConfigurationFunction{},
+	GetVideoEncoderConfigurations:       &media.GetVideoEncoderConfigurationsFunction{},
 	SetVideoEncoderConfiguration:        &media.SetVideoEncoderConfigurationFunction{},
 	GetVideoEncoderConfigurationOptions: &media.GetVideoEncoderConfigurationOptionsFunction{},
 	// PTZ Configuration
 	AddPTZConfiguration:    &media.AddPTZConfigurationFunction{},
 	RemovePTZConfiguration: &media.RemovePTZConfigurationFunction{},
+}
+
+var Media2FunctionMap = map[string]Function{
+	GetProfiles:                &media2.GetProfilesFunction{},
+	GetAnalyticsConfigurations: &media2.GetAnalyticsConfigurationsFunction{},
+	AddConfiguration:           &media2.AddConfigurationFunction{},
+	RemoveConfiguration:        &media2.RemoveConfigurationFunction{},
 }
 
 var PTZFunctionMap = map[string]Function{
@@ -97,6 +108,23 @@ var EventFunctionMap = map[string]Function{
 	Renew:                       &event.RenewFunction{},
 }
 
+var AnalyticsFunctionMap = map[string]Function{
+	// Analytics Module
+	GetSupportedAnalyticsModules: &analytics.GetSupportedAnalyticsModulesFunction{},
+	GetAnalyticsModules:          &analytics.GetAnalyticsModulesFunction{},
+	CreateAnalyticsModules:       &analytics.CreateAnalyticsModulesFunction{},
+	DeleteAnalyticsModules:       &analytics.DeleteAnalyticsModulesFunction{},
+	GetAnalyticsModuleOptions:    &analytics.GetAnalyticsModuleOptionsFunction{},
+	ModifyAnalyticsModules:       &analytics.ModifyAnalyticsModulesFunction{},
+	// Rule
+	GetSupportedRules: &analytics.GetSupportedRulesFunction{},
+	GetRules:          &analytics.GetRulesFunction{},
+	CreateRules:       &analytics.CreateRulesFunction{},
+	DeleteRules:       &analytics.DeleteRulesFunction{},
+	GetRuleOptions:    &analytics.GetRuleOptionsFunction{},
+	ModifyRules:       &analytics.ModifyRulesFunction{},
+}
+
 func FunctionByServiceAndFunctionName(serviceName, functionName string) (Function, error) {
 	var function Function
 	var exist bool
@@ -111,6 +139,11 @@ func FunctionByServiceAndFunctionName(serviceName, functionName string) (Functio
 		if !exist {
 			return nil, fmt.Errorf("the web service '%s' not support the function '%s'", serviceName, functionName)
 		}
+	case Media2WebService:
+		function, exist = Media2FunctionMap[functionName]
+		if !exist {
+			return nil, fmt.Errorf("the web service '%s' not support the function '%s'", serviceName, functionName)
+		}
 	case PTZWebService:
 		function, exist = PTZFunctionMap[functionName]
 		if !exist {
@@ -118,6 +151,11 @@ func FunctionByServiceAndFunctionName(serviceName, functionName string) (Functio
 		}
 	case EventWebService:
 		function, exist = EventFunctionMap[functionName]
+		if !exist {
+			return nil, fmt.Errorf("the web service '%s' not support the function '%s'", serviceName, functionName)
+		}
+	case AnalyticsWebService:
+		function, exist = AnalyticsFunctionMap[functionName]
 		if !exist {
 			return nil, fmt.Errorf("the web service '%s' not support the function '%s'", serviceName, functionName)
 		}

@@ -25,6 +25,7 @@ var Xlmns = map[string]string{
 	"onvif":   "http://www.onvif.org/ver10/schema",
 	"tds":     "http://www.onvif.org/ver10/device/wsdl",
 	"trt":     "http://www.onvif.org/ver10/media/wsdl",
+	"tr2":     "http://www.onvif.org/ver20/media/wsdl",
 	"tev":     "http://www.onvif.org/ver10/events/wsdl",
 	"tptz":    "http://www.onvif.org/ver20/ptz/wsdl",
 	"timg":    "http://www.onvif.org/ver20/imaging/wsdl",
@@ -164,6 +165,11 @@ func (dev *Device) addEndpoint(Key, Value string) {
 	}
 
 	dev.endpoints[lowCaseKey] = Value
+
+	if lowCaseKey == strings.ToLower(MediaWebService) {
+		// Media2 uses the same endpoint but different XML name space
+		dev.endpoints[strings.ToLower(Media2WebService)] = Value
+	}
 }
 
 //GetEndpoint returns specific ONVIF service endpoint address
