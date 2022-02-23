@@ -275,7 +275,8 @@ func (dev *Device) SendSoap(endpoint string, xmlRequestBody string) (resp *http.
 	if dev.params.AuthMode == DigestAuth || dev.params.AuthMode == Both {
 		resp, err = dev.digestClient.Do(endpoint, soap.String())
 	} else {
-		req, err := createHttpRequest(endpoint, soap.String())
+		var req *http.Request
+		req, err = createHttpRequest(endpoint, soap.String())
 		if err != nil {
 			return nil, err
 		}
