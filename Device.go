@@ -16,7 +16,6 @@ import (
 	"github.com/IOTechSystems/onvif/device"
 	"github.com/IOTechSystems/onvif/gosoap"
 	"github.com/IOTechSystems/onvif/networking"
-
 	"github.com/beevik/etree"
 )
 
@@ -89,11 +88,12 @@ type Device struct {
 }
 
 type DeviceParams struct {
-	Xaddr      string
-	Username   string
-	Password   string
-	HttpClient *http.Client
-	AuthMode   string
+	Xaddr              string
+	EndpointRefAddress string
+	Username           string
+	Password           string
+	HttpClient         *http.Client
+	AuthMode           string
 }
 
 //GetServices return available endpoints
