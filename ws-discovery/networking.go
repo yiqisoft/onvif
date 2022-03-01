@@ -14,6 +14,7 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"net/url"
 	"os"
 	"strings"
 	"time"
@@ -40,46 +41,62 @@ func GetAvailableDevicesAtSpecificEthernetInterface(interfaceName string) []onvi
 	if strings.TrimSpace(interfaceName) == "" {
 		interfaceName = defaultInterfaceName
 	}
-	devices := SendProbe(interfaceName, nil, nil, map[string]string{"dn": "http://www.onvif.org/ver10/network/wsdl"})
+	probeResponses := SendProbe(interfaceName, nil, nil, map[string]string{"dn": "http://www.onvif.org/ver10/network/wsdl"})
 	nvtDevices := make([]onvif.Device, 0)
-
-	for _, j := range devices {
-		doc := etree.NewDocument()
-		if err := doc.ReadFromString(j); err != nil {
-			fmt.Errorf("%s", err.Error())
-			return nil
-		}
-
-		endpoints := doc.Root().FindElements("./Body/ProbeMatches/ProbeMatch/XAddrs")
-		for _, xaddr := range endpoints {
-			xaddr := strings.Split(strings.Split(xaddr.Text(), " ")[0], "/")[2]
-			fmt.Printf("Onvif WS-Discovery: Find %s \n", xaddr)
-			c := 0
-
-			for c = 0; c < len(nvtDevices); c++ {
-				if nvtDevices[c].GetDeviceParams().Xaddr == xaddr {
-					fmt.Println(nvtDevices[c].GetDeviceParams().Xaddr, "==", xaddr)
-					break
-				}
-			}
-
-			if c < len(nvtDevices) {
-				continue
-			}
-
-			dev, err := onvif.NewDevice(onvif.DeviceParams{Xaddr: strings.Split(xaddr, " ")[0]})
-
-			if err != nil {
-				fmt.Println("Error", xaddr)
-				fmt.Println(err)
-				continue
-			} else {
-				nvtDevices = append(nvtDevices, *dev)
-			}
-		}
+	nvtDevices, err := devicesFromProbeResponses(probeResponses)
+	if err != nil {
+		fmt.Printf("Fail to discover Onvif camera: %s \n", err)
 	}
 
 	return nvtDevices
+}
+
+func devicesFromProbeResponses(probeResponses []string) ([]onvif.Device, error) {
+	nvtDevices := make([]onvif.Device, 0)
+	xaddrSet := make(map[string]struct{})
+	for _, j := range probeResponses {
+		doc := etree.NewDocument()
+		if err := doc.ReadFromString(j); err != nil {
+			return nil, err
+		}
+
+		probeMatches := doc.Root().FindElements("./Body/ProbeMatches/ProbeMatch")
+		for _, probeMatch := range probeMatches {
+			var xaddr string
+			if address := probeMatch.FindElement("./XAddrs"); address != nil {
+				u, err := url.Parse(address.Text())
+				if err != nil {
+					fmt.Printf("Invalid XAddrs: %s\n", address.Text())
+					continue
+				}
+				xaddr = u.Host
+			}
+			if _, dupe := xaddrSet[xaddr]; dupe {
+				fmt.Printf("Skipping duplicate XAddr: %s\n", xaddr)
+				continue
+			}
+
+			var endpointRefAddress string
+			if ref := probeMatch.FindElement("./EndpointReference/Address"); ref != nil {
+				uuidElements := strings.Split(ref.Text(), ":")
+				endpointRefAddress = uuidElements[len(uuidElements)-1]
+			}
+
+			dev, err := onvif.NewDevice(onvif.DeviceParams{
+				Xaddr:              xaddr,
+				EndpointRefAddress: endpointRefAddress,
+			})
+			if err != nil {
+				fmt.Printf("Failed to connect to camera at %s\n", xaddr)
+				continue
+			}
+			xaddrSet[xaddr] = struct{}{}
+			nvtDevices = append(nvtDevices, *dev)
+			fmt.Printf("Onvif WS-Discovery: Find Xaddr: %-25s EndpointRefAddress: %s\n", xaddr, string(endpointRefAddress))
+		}
+	}
+
+	return nvtDevices, nil
 }
 
 //SendProbe to device
