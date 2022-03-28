@@ -46,7 +46,7 @@ func TestDevicesFromProbeResponses(t *testing.T) {
 		</SOAP-ENV:Envelope>`,
 	}
 
-	devices, err := devicesFromProbeResponses(probeResponses)
+	devices, err := DevicesFromProbeResponses(probeResponses)
 	require.NoError(t, err)
 	assert.Equal(t, 2, len(devices))
 	assert.Equal(t, devices[0].GetDeviceParams().Xaddr, "192.168.12.123")
