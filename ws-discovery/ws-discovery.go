@@ -7,7 +7,7 @@ import (
 	"github.com/beevik/etree"
 )
 
-func buildProbeMessage(uuidV4 string, scopes, types []string, nmsp map[string]string) gosoap.SoapMessage {
+func BuildProbeMessage(uuidV4 string, scopes, types []string, nmsp map[string]string) gosoap.SoapMessage {
 	//Список namespace
 	namespaces := make(map[string]string)
 	namespaces["a"] = "http://schemas.xmlsoap.org/ws/2004/08/addressing"

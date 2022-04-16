@@ -43,7 +43,7 @@ func GetAvailableDevicesAtSpecificEthernetInterface(interfaceName string) []onvi
 	}
 	probeResponses := SendProbe(interfaceName, nil, nil, map[string]string{"dn": "http://www.onvif.org/ver10/network/wsdl"})
 	nvtDevices := make([]onvif.Device, 0)
-	nvtDevices, err := devicesFromProbeResponses(probeResponses)
+	nvtDevices, err := DevicesFromProbeResponses(probeResponses)
 	if err != nil {
 		fmt.Printf("Fail to discover Onvif camera: %s \n", err)
 	}
@@ -51,7 +51,7 @@ func GetAvailableDevicesAtSpecificEthernetInterface(interfaceName string) []onvi
 	return nvtDevices
 }
 
-func devicesFromProbeResponses(probeResponses []string) ([]onvif.Device, error) {
+func DevicesFromProbeResponses(probeResponses []string) ([]onvif.Device, error) {
 	nvtDevices := make([]onvif.Device, 0)
 	xaddrSet := make(map[string]struct{})
 	for _, j := range probeResponses {
@@ -105,7 +105,7 @@ func SendProbe(interfaceName string, scopes, types []string, namespaces map[stri
 	uuidV4 := uuid.Must(uuid.NewV4())
 	//fmt.Printf("UUIDv4: %s\n", uuidV4)
 
-	probeSOAP := buildProbeMessage(uuidV4.String(), scopes, types, namespaces)
+	probeSOAP := BuildProbeMessage(uuidV4.String(), scopes, types, namespaces)
 	//probeSOAP = `<?xml version="1.0" encoding="UTF-8"?>
 	//<Envelope xmlns="http://www.w3.org/2003/05/soap-envelope" xmlns:a="http://schemas.xmlsoap.org/ws/2004/08/addressing">
 	//<Header>
@@ -120,11 +120,11 @@ func SendProbe(interfaceName string, scopes, types []string, namespaces map[stri
 	//</Body>
 	//</Envelope>`
 
-	return sendUDPMulticast(probeSOAP.String(), interfaceName)
+	return SendUDPMulticast(probeSOAP.String(), interfaceName)
 
 }
 
-func sendUDPMulticast(msg string, interfaceName string) []string {
+func SendUDPMulticast(msg string, interfaceName string) []string {
 	var result []string
 	data := []byte(msg)
 	iface, err := net.InterfaceByName(interfaceName)
