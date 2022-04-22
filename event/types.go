@@ -1,8 +1,13 @@
 package event
 
 import (
+	"encoding/xml"
+	"fmt"
+	"reflect"
+
 	"github.com/IOTechSystems/onvif/event/topic"
 	"github.com/IOTechSystems/onvif/xsd"
+	mv "github.com/clbanning/mxj/v2"
 )
 
 //Address Alias
@@ -67,7 +72,30 @@ type MetadataType struct { //wsa https://www.w3.org/2005/08/addressing/ws-addr.x
 }
 
 //TopicSet alias
-type TopicSet TopicSetType //wstop http://docs.oasis-open.org/wsn/t-1.xsd
+type TopicSet map[string]interface{} //wstop http://docs.oasis-open.org/wsn/t-1.xsd
+
+type Node struct {
+	XMLName xml.Name
+	Content []byte `xml:",innerxml"`
+}
+
+func (n *TopicSet) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+	node := Node{}
+	err := d.DecodeElement(&node, &start)
+	if err != nil {
+		return err
+	}
+	wrapper := "root" // The TopicSet is an array, we need to wrap with a tag for XML parsing
+	c := fmt.Sprintf("<%s>%s</%s>", wrapper, node.Content, wrapper)
+	result, err := mv.NewMapXmlSeq([]byte(c))
+	if err != nil {
+		return err
+	}
+	if result[wrapper] != nil && reflect.ValueOf(result[wrapper]).Kind() == reflect.Map {
+		*n = (result[wrapper]).(map[string]interface{})
+	}
+	return nil
+}
 
 //TopicSetType alias
 type TopicSetType struct { //wstop http://docs.oasis-open.org/wsn/t-1.xsd
