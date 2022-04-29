@@ -1,41 +1,43 @@
+// -*- Mode: Go; indent-tabs-mode: t -*-
+//
+// Copyright (C) 2022 Intel Corporation
+//
+// SPDX-License-Identifier: Apache-2.0
+
 package media2
 
-type GetProfilesFunction struct{}
+type AddConfigurationFunction struct{}
 
-func (function *GetProfilesFunction) Request() interface{} {
-	return &GetProfiles{}
+func (_ *AddConfigurationFunction) Request() interface{} {
+	return &AddConfiguration{}
 }
-
-func (function *GetProfilesFunction) Response() interface{} {
-	return &GetProfilesResponse{}
+func (_ *AddConfigurationFunction) Response() interface{} {
+	return &AddConfigurationResponse{}
 }
 
 type GetAnalyticsConfigurationsFunction struct{}
 
-func (function *GetAnalyticsConfigurationsFunction) Request() interface{} {
+func (_ *GetAnalyticsConfigurationsFunction) Request() interface{} {
 	return &GetAnalyticsConfigurations{}
 }
-
-func (function *GetAnalyticsConfigurationsFunction) Response() interface{} {
+func (_ *GetAnalyticsConfigurationsFunction) Response() interface{} {
 	return &GetAnalyticsConfigurationsResponse{}
 }
 
-type AddConfigurationFunction struct{}
+type GetProfilesFunction struct{}
 
-func (function *AddConfigurationFunction) Request() interface{} {
-	return &AddConfiguration{}
+func (_ *GetProfilesFunction) Request() interface{} {
+	return &GetProfiles{}
 }
-
-func (function *AddConfigurationFunction) Response() interface{} {
-	return &AddConfigurationResponse{}
+func (_ *GetProfilesFunction) Response() interface{} {
+	return &GetProfilesResponse{}
 }
 
 type RemoveConfigurationFunction struct{}
 
-func (function *RemoveConfigurationFunction) Request() interface{} {
+func (_ *RemoveConfigurationFunction) Request() interface{} {
 	return &RemoveConfiguration{}
 }
-
-func (function *RemoveConfigurationFunction) Response() interface{} {
+func (_ *RemoveConfigurationFunction) Response() interface{} {
 	return &RemoveConfigurationResponse{}
 }

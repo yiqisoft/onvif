@@ -1,121 +1,115 @@
+// -*- Mode: Go; indent-tabs-mode: t -*-
+//
+// Copyright (C) 2022 Intel Corporation
+//
+// SPDX-License-Identifier: Apache-2.0
+
 package analytics
-
-type GetSupportedAnalyticsModulesFunction struct{}
-
-func (function *GetSupportedAnalyticsModulesFunction) Request() interface{} {
-	return &GetSupportedAnalyticsModules{}
-}
-
-func (function *GetSupportedAnalyticsModulesFunction) Response() interface{} {
-	return &GetSupportedAnalyticsModulesResponse{}
-}
-
-type GetAnalyticsModulesFunction struct{}
-
-func (function *GetAnalyticsModulesFunction) Request() interface{} {
-	return &GetAnalyticsModules{}
-}
-
-func (function *GetAnalyticsModulesFunction) Response() interface{} {
-	return &GetAnalyticsModulesResponse{}
-}
 
 type CreateAnalyticsModulesFunction struct{}
 
-func (function *CreateAnalyticsModulesFunction) Request() interface{} {
+func (_ *CreateAnalyticsModulesFunction) Request() interface{} {
 	return &CreateAnalyticsModules{}
 }
-
-func (function *CreateAnalyticsModulesFunction) Response() interface{} {
+func (_ *CreateAnalyticsModulesFunction) Response() interface{} {
 	return &CreateAnalyticsModulesResponse{}
-}
-
-type DeleteAnalyticsModulesFunction struct{}
-
-func (function *DeleteAnalyticsModulesFunction) Request() interface{} {
-	return &DeleteAnalyticsModules{}
-}
-
-func (function *DeleteAnalyticsModulesFunction) Response() interface{} {
-	return &DeleteAnalyticsModulesResponse{}
-}
-
-type GetAnalyticsModuleOptionsFunction struct{}
-
-func (function *GetAnalyticsModuleOptionsFunction) Request() interface{} {
-	return &GetAnalyticsModuleOptions{}
-}
-
-func (function *GetAnalyticsModuleOptionsFunction) Response() interface{} {
-	return &GetAnalyticsModuleOptionsResponse{}
-}
-
-type ModifyAnalyticsModulesFunction struct{}
-
-func (function *ModifyAnalyticsModulesFunction) Request() interface{} {
-	return &ModifyAnalyticsModules{}
-}
-
-func (function *ModifyAnalyticsModulesFunction) Response() interface{} {
-	return &ModifyAnalyticsModulesResponse{}
-}
-
-type GetSupportedRulesFunction struct{}
-
-func (function *GetSupportedRulesFunction) Request() interface{} {
-	return &GetSupportedRules{}
-}
-
-func (function *GetSupportedRulesFunction) Response() interface{} {
-	return &GetSupportedRulesResponse{}
-}
-
-type GetRulesFunction struct{}
-
-func (function *GetRulesFunction) Request() interface{} {
-	return &GetRules{}
-}
-
-func (function *GetRulesFunction) Response() interface{} {
-	return &GetRulesResponse{}
 }
 
 type CreateRulesFunction struct{}
 
-func (function *CreateRulesFunction) Request() interface{} {
+func (_ *CreateRulesFunction) Request() interface{} {
 	return &CreateRules{}
 }
-
-func (function *CreateRulesFunction) Response() interface{} {
+func (_ *CreateRulesFunction) Response() interface{} {
 	return &CreateRulesResponse{}
+}
+
+type DeleteAnalyticsModulesFunction struct{}
+
+func (_ *DeleteAnalyticsModulesFunction) Request() interface{} {
+	return &DeleteAnalyticsModules{}
+}
+func (_ *DeleteAnalyticsModulesFunction) Response() interface{} {
+	return &DeleteAnalyticsModulesResponse{}
 }
 
 type DeleteRulesFunction struct{}
 
-func (function *DeleteRulesFunction) Request() interface{} {
+func (_ *DeleteRulesFunction) Request() interface{} {
 	return &DeleteRules{}
 }
-
-func (function *DeleteRulesFunction) Response() interface{} {
+func (_ *DeleteRulesFunction) Response() interface{} {
 	return &DeleteRulesResponse{}
+}
+
+type GetAnalyticsModuleOptionsFunction struct{}
+
+func (_ *GetAnalyticsModuleOptionsFunction) Request() interface{} {
+	return &GetAnalyticsModuleOptions{}
+}
+func (_ *GetAnalyticsModuleOptionsFunction) Response() interface{} {
+	return &GetAnalyticsModuleOptionsResponse{}
+}
+
+type GetAnalyticsModulesFunction struct{}
+
+func (_ *GetAnalyticsModulesFunction) Request() interface{} {
+	return &GetAnalyticsModules{}
+}
+func (_ *GetAnalyticsModulesFunction) Response() interface{} {
+	return &GetAnalyticsModulesResponse{}
 }
 
 type GetRuleOptionsFunction struct{}
 
-func (function *GetRuleOptionsFunction) Request() interface{} {
+func (_ *GetRuleOptionsFunction) Request() interface{} {
 	return &GetRuleOptions{}
 }
-
-func (function *GetRuleOptionsFunction) Response() interface{} {
+func (_ *GetRuleOptionsFunction) Response() interface{} {
 	return &GetRuleOptionsResponse{}
+}
+
+type GetRulesFunction struct{}
+
+func (_ *GetRulesFunction) Request() interface{} {
+	return &GetRules{}
+}
+func (_ *GetRulesFunction) Response() interface{} {
+	return &GetRulesResponse{}
+}
+
+type GetSupportedAnalyticsModulesFunction struct{}
+
+func (_ *GetSupportedAnalyticsModulesFunction) Request() interface{} {
+	return &GetSupportedAnalyticsModules{}
+}
+func (_ *GetSupportedAnalyticsModulesFunction) Response() interface{} {
+	return &GetSupportedAnalyticsModulesResponse{}
+}
+
+type GetSupportedRulesFunction struct{}
+
+func (_ *GetSupportedRulesFunction) Request() interface{} {
+	return &GetSupportedRules{}
+}
+func (_ *GetSupportedRulesFunction) Response() interface{} {
+	return &GetSupportedRulesResponse{}
+}
+
+type ModifyAnalyticsModulesFunction struct{}
+
+func (_ *ModifyAnalyticsModulesFunction) Request() interface{} {
+	return &ModifyAnalyticsModules{}
+}
+func (_ *ModifyAnalyticsModulesFunction) Response() interface{} {
+	return &ModifyAnalyticsModulesResponse{}
 }
 
 type ModifyRulesFunction struct{}
 
-func (function *ModifyRulesFunction) Request() interface{} {
+func (_ *ModifyRulesFunction) Request() interface{} {
 	return &ModifyRules{}
 }
-
-func (function *ModifyRulesFunction) Response() interface{} {
+func (_ *ModifyRulesFunction) Response() interface{} {
 	return &ModifyRulesResponse{}
 }

@@ -14,6 +14,7 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"net/http"
 	"net/url"
 	"os"
 	"strings"
@@ -85,6 +86,9 @@ func DevicesFromProbeResponses(probeResponses []string) ([]onvif.Device, error) 
 			dev, err := onvif.NewDevice(onvif.DeviceParams{
 				Xaddr:              xaddr,
 				EndpointRefAddress: endpointRefAddress,
+				HttpClient: &http.Client{
+					Timeout: 5 * time.Second,
+				},
 			})
 			if err != nil {
 				fmt.Printf("Failed to connect to camera at %s\n", xaddr)

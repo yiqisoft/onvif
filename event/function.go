@@ -1,61 +1,97 @@
+// -*- Mode: Go; indent-tabs-mode: t -*-
+//
+// Copyright (C) 2022 Intel Corporation
+//
+// SPDX-License-Identifier: Apache-2.0
+
 package event
-
-type GetEventPropertiesFunction struct{}
-
-func (function *GetEventPropertiesFunction) Request() interface{} {
-	return &GetEventProperties{}
-}
-
-func (function *GetEventPropertiesFunction) Response() interface{} {
-	return &GetEventPropertiesResponse{}
-}
 
 type CreatePullPointSubscriptionFunction struct{}
 
-func (function *CreatePullPointSubscriptionFunction) Request() interface{} {
+func (_ *CreatePullPointSubscriptionFunction) Request() interface{} {
 	return &CreatePullPointSubscription{}
 }
-
-func (function *CreatePullPointSubscriptionFunction) Response() interface{} {
+func (_ *CreatePullPointSubscriptionFunction) Response() interface{} {
 	return &CreatePullPointSubscriptionResponse{}
+}
+
+type GetEventPropertiesFunction struct{}
+
+func (_ *GetEventPropertiesFunction) Request() interface{} {
+	return &GetEventProperties{}
+}
+func (_ *GetEventPropertiesFunction) Response() interface{} {
+	return &GetEventPropertiesResponse{}
+}
+
+type GetServiceCapabilitiesFunction struct{}
+
+func (_ *GetServiceCapabilitiesFunction) Request() interface{} {
+	return &GetServiceCapabilities{}
+}
+func (_ *GetServiceCapabilitiesFunction) Response() interface{} {
+	return &GetServiceCapabilitiesResponse{}
 }
 
 type PullMessagesFunction struct{}
 
-func (function *PullMessagesFunction) Request() interface{} {
+func (_ *PullMessagesFunction) Request() interface{} {
 	return &PullMessages{}
 }
-
-func (function *PullMessagesFunction) Response() interface{} {
+func (_ *PullMessagesFunction) Response() interface{} {
 	return &PullMessagesResponse{}
-}
-
-type UnsubscribeFunction struct{}
-
-func (function *UnsubscribeFunction) Request() interface{} {
-	return &Unsubscribe{}
-}
-
-func (function *UnsubscribeFunction) Response() interface{} {
-	return &UnsubscribeResponse{}
-}
-
-type SubscribeFunction struct{}
-
-func (function *SubscribeFunction) Request() interface{} {
-	return &Subscribe{}
-}
-
-func (function *SubscribeFunction) Response() interface{} {
-	return &SubscribeResponse{}
 }
 
 type RenewFunction struct{}
 
-func (function *RenewFunction) Request() interface{} {
+func (_ *RenewFunction) Request() interface{} {
 	return &Renew{}
 }
-
-func (function *RenewFunction) Response() interface{} {
+func (_ *RenewFunction) Response() interface{} {
 	return &RenewResponse{}
+}
+
+type SeekFunction struct{}
+
+func (_ *SeekFunction) Request() interface{} {
+	return &Seek{}
+}
+func (_ *SeekFunction) Response() interface{} {
+	return &SeekResponse{}
+}
+
+type SetSynchronizationPointFunction struct{}
+
+func (_ *SetSynchronizationPointFunction) Request() interface{} {
+	return &SetSynchronizationPoint{}
+}
+func (_ *SetSynchronizationPointFunction) Response() interface{} {
+	return &SetSynchronizationPointResponse{}
+}
+
+type SubscribeFunction struct{}
+
+func (_ *SubscribeFunction) Request() interface{} {
+	return &Subscribe{}
+}
+func (_ *SubscribeFunction) Response() interface{} {
+	return &SubscribeResponse{}
+}
+
+type SubscriptionReferenceFunction struct{}
+
+func (_ *SubscriptionReferenceFunction) Request() interface{} {
+	return &SubscriptionReference{}
+}
+func (_ *SubscriptionReferenceFunction) Response() interface{} {
+	return &SubscriptionReferenceResponse{}
+}
+
+type UnsubscribeFunction struct{}
+
+func (_ *UnsubscribeFunction) Request() interface{} {
+	return &Unsubscribe{}
+}
+func (_ *UnsubscribeFunction) Response() interface{} {
+	return &UnsubscribeResponse{}
 }
