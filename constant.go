@@ -52,6 +52,7 @@ const (
 	GetMetadataConfigurationOptions     = "GetMetadataConfigurationOptions"
 	GetProfiles                         = "GetProfiles"
 	GetStreamUri                        = "GetStreamUri"
+	GetSnapshotUri                      = "GetSnapshotUri"
 	GetVideoEncoderConfiguration        = "GetVideoEncoderConfiguration"
 	GetVideoEncoderConfigurations       = "GetVideoEncoderConfigurations"
 	SetVideoEncoderConfiguration        = "SetVideoEncoderConfiguration"

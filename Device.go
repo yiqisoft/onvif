@@ -273,10 +273,10 @@ func (dev *Device) SendSoap(endpoint string, xmlRequestBody string) (resp *http.
 	}
 
 	if dev.params.AuthMode == DigestAuth || dev.params.AuthMode == Both {
-		resp, err = dev.digestClient.Do(endpoint, soap.String())
+		resp, err = dev.digestClient.Do(http.MethodPost, endpoint, soap.String())
 	} else {
 		var req *http.Request
-		req, err = createHttpRequest(endpoint, soap.String())
+		req, err = createHttpRequest(http.MethodPost, endpoint, soap.String())
 		if err != nil {
 			return nil, err
 		}
@@ -285,8 +285,8 @@ func (dev *Device) SendSoap(endpoint string, xmlRequestBody string) (resp *http.
 	return resp, err
 }
 
-func createHttpRequest(endpoint string, soap string) (req *http.Request, err error) {
-	req, err = http.NewRequest(http.MethodPost, endpoint, bytes.NewBufferString(soap))
+func createHttpRequest(httpMethod string, endpoint string, soap string) (req *http.Request, err error) {
+	req, err = http.NewRequest(httpMethod, endpoint, bytes.NewBufferString(soap))
 	if err != nil {
 		return nil, err
 	}
@@ -363,4 +363,35 @@ func createResponse(function Function, data []byte) (*gosoap.SOAPEnvelope, error
 		return nil, err
 	}
 	return responseEnvelope, nil
+}
+
+// SendGetSnapshotRequest sends the Get request to retrieve the snapshot from the Onvif camera
+// The parameter url is come from the "GetSnapshotURI" command.
+func (dev *Device) SendGetSnapshotRequest(url string) (resp *http.Response, err error) {
+	soap := gosoap.NewEmptySOAP()
+	soap.AddRootNamespaces(Xlmns)
+	if dev.params.AuthMode == UsernameTokenAuth {
+		soap.AddWSSecurity(dev.params.Username, dev.params.Password)
+		var req *http.Request
+		req, err = createHttpRequest(http.MethodGet, url, soap.String())
+		if err != nil {
+			return nil, err
+		}
+		// Basic auth might work for some camera
+		req.SetBasicAuth(dev.params.Username, dev.params.Password)
+		resp, err = dev.params.HttpClient.Do(req)
+
+	} else if dev.params.AuthMode == DigestAuth || dev.params.AuthMode == Both {
+		soap.AddWSSecurity(dev.params.Username, dev.params.Password)
+		resp, err = dev.digestClient.Do(http.MethodGet, url, soap.String())
+
+	} else {
+		var req *http.Request
+		req, err = createHttpRequest(http.MethodGet, url, soap.String())
+		if err != nil {
+			return nil, err
+		}
+		resp, err = dev.params.HttpClient.Do(req)
+	}
+	return resp, err
 }
