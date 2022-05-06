@@ -31,8 +31,8 @@ func NewDigestClient(stdClient *http.Client, username string, password string) *
 	}
 }
 
-func (dc *DigestClient) Do(endpoint string, soap string) (*http.Response, error) {
-	req, err := createHttpRequest(endpoint, soap)
+func (dc *DigestClient) Do(httpMethod string, endpoint string, soap string) (*http.Response, error) {
+	req, err := createHttpRequest(httpMethod, endpoint, soap)
 	if err != nil {
 		return nil, err
 	}
@@ -54,7 +54,7 @@ func (dc *DigestClient) Do(endpoint string, soap string) (*http.Response, error)
 	// We will need to return the response from another request, so defer a close on this one
 	defer resp.Body.Close()
 
-	req, err = createHttpRequest(endpoint, soap)
+	req, err = createHttpRequest(httpMethod, endpoint, soap)
 	if err != nil {
 		return nil, err
 	}

@@ -53,8 +53,9 @@ var MediaFunctionMap = map[string]Function{
 	GetCompatibleMetadataConfigurations: &media.GetCompatibleMetadataConfigurationsFunction{},
 	GetMetadataConfigurationOptions:     &media.GetMetadataConfigurationOptionsFunction{},
 	// Video Streaming
-	GetProfiles:  &media.GetProfilesFunction{},
-	GetStreamUri: &media.GetStreamUriFunction{},
+	GetProfiles:    &media.GetProfilesFunction{},
+	GetStreamUri:   &media.GetStreamUriFunction{},
+	GetSnapshotUri: &media.GetSnapshotUriFunction{},
 	// Video Encoder Configuration
 	GetVideoEncoderConfiguration:        &media.GetVideoEncoderConfigurationFunction{},
 	GetVideoEncoderConfigurations:       &media.GetVideoEncoderConfigurationsFunction{},

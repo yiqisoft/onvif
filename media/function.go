@@ -90,6 +90,16 @@ func (function *GetStreamUriFunction) Response() interface{} {
 	return &GetStreamUriResponse{}
 }
 
+type GetSnapshotUriFunction struct{}
+
+func (function *GetSnapshotUriFunction) Request() interface{} {
+	return &GetSnapshotUri{}
+}
+
+func (function *GetSnapshotUriFunction) Response() interface{} {
+	return &GetSnapshotUriResponse{}
+}
+
 type GetVideoEncoderConfigurationFunction struct{}
 
 func (function *GetVideoEncoderConfigurationFunction) Request() interface{} {
