@@ -22,7 +22,7 @@ import (
 	"github.com/IOTechSystems/onvif"
 
 	"github.com/beevik/etree"
-	"github.com/gofrs/uuid"
+	"github.com/google/uuid"
 	"golang.org/x/net/ipv4"
 )
 
@@ -101,11 +101,7 @@ func DevicesFromProbeResponses(probeResponses []string) ([]onvif.Device, error) 
 
 //SendProbe to device
 func SendProbe(interfaceName string, scopes, types []string, namespaces map[string]string) []string {
-	// Creating UUID Version 4
-	uuidV4 := uuid.Must(uuid.NewV4())
-	//fmt.Printf("UUIDv4: %s\n", uuidV4)
-
-	probeSOAP := BuildProbeMessage(uuidV4.String(), scopes, types, namespaces)
+	probeSOAP := BuildProbeMessage(uuid.NewString(), scopes, types, namespaces)
 	//probeSOAP = `<?xml version="1.0" encoding="UTF-8"?>
 	//<Envelope xmlns="http://www.w3.org/2003/05/soap-envelope" xmlns:a="http://schemas.xmlsoap.org/ws/2004/08/addressing">
 	//<Header>
