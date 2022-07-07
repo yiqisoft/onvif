@@ -249,3 +249,13 @@ func (function *RemoveScopesFunction) Request() interface{} {
 func (function *RemoveScopesFunction) Response() interface{} {
 	return &RemoveScopesResponse{}
 }
+
+type GetEndpointReferenceFunction struct{}
+
+func (function *GetEndpointReferenceFunction) Request() interface{} {
+	return &GetEndpointReference{}
+}
+
+func (function *GetEndpointReferenceFunction) Response() interface{} {
+	return &GetEndpointReferenceResponse{}
+}

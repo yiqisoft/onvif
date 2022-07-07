@@ -41,6 +41,8 @@ var DeviceFunctionMap = map[string]Function{
 	SetScopes:        &device.SetScopesFunction{},
 	AddScopes:        &device.AddScopesFunction{},
 	RemoveScopes:     &device.RemoveScopesFunction{},
+
+	GetEndpointReference: &device.GetEndpointReferenceFunction{},
 }
 
 var MediaFunctionMap = map[string]Function{
