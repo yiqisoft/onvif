@@ -42,6 +42,8 @@ const (
 	AddScopes        = "AddScopes"
 	RemoveScopes     = "RemoveScopes"
 
+	GetEndpointReference = "GetEndpointReference"
+
 	// WebService - Media
 	GetMetadataConfiguration            = "GetMetadataConfiguration"
 	GetMetadataConfigurations           = "GetMetadataConfigurations"
