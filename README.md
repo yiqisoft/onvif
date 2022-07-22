@@ -89,3 +89,6 @@ device := onvif.NewDevice(onvif.DeviceParams{Xaddr: "192.168.13.42:1234", Userna
 device.Authenticate("username", "password")
 resp, err := dev.CallMethod(createUsers)
 ```
+
+## Development
+See [here](docs/Development.md)
