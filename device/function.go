@@ -815,3 +815,13 @@ func (_ *UpgradeSystemFirmwareFunction) Request() interface{} {
 func (_ *UpgradeSystemFirmwareFunction) Response() interface{} {
 	return &UpgradeSystemFirmwareResponse{}
 }
+
+type GetEndpointReferenceFunction struct{}
+
+func (function *GetEndpointReferenceFunction) Request() interface{} {
+	return &GetEndpointReference{}
+}
+
+func (function *GetEndpointReferenceFunction) Response() interface{} {
+	return &GetEndpointReferenceResponse{}
+}
