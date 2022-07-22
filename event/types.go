@@ -1,5 +1,7 @@
 package event
 
+//go:generate python3 ../python/gen_commands.py
+
 import (
 	"encoding/xml"
 	"fmt"
@@ -54,7 +56,7 @@ type FilterType struct {
 	MessageContent  *QueryExpressionType `xml:"wsnt:MessageContent,omitempty"`
 }
 
-//EndpointReference alais
+//EndpointReference alias
 type EndpointReference EndpointReferenceType
 
 //ReferenceParametersType in ws-addr

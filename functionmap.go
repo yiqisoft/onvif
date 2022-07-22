@@ -20,6 +20,8 @@ func FunctionByServiceAndFunctionName(serviceName, functionName string) (Functio
 		functionMap = EventFunctionMap
 	case AnalyticsWebService:
 		functionMap = AnalyticsFunctionMap
+	case ImagingWebService:
+		functionMap = ImagingFunctionMap
 	default:
 		return nil, fmt.Errorf("the web service '%s' is not supported", serviceName)
 	}

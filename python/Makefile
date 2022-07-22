@@ -6,5 +6,6 @@
 
 gen:
 	python3 gen_commands.py
+	which go
 	go fmt ../...
 
