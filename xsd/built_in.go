@@ -255,9 +255,9 @@ type DateTime struct {
 	TODO: process restrictions
 */
 type Time struct {
-	Hour   string
-	Minute string
-	Second string
+	Hour   Int
+	Minute Int
+	Second Int
 }
 
 /*
@@ -275,9 +275,9 @@ type Time struct {
 	values, the intervals begin at every minute and therefore overlap.
 */
 type Date struct {
-	Year  string
-	Month string
-	date  string
+	Year  Int
+	Month Int
+	Day   Int
 }
 
 /*
