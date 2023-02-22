@@ -40,7 +40,7 @@ func main() {
 	//Preparing commands
 	UserLevel := onvif.UserLevel("User")
 	systemDateAndTyme := device.GetSystemDateAndTime{}
-	getCapabilities := device.GetCapabilities{Category: "All"}
+	getCapabilities := device.GetCapabilities{Category: []onvif.CapabilityCategory{"All"}}
 	createUser := device.CreateUsers{
 		User: []onvif.UserRequest{
 			{
