@@ -38,28 +38,24 @@ type NetworkCapabilities struct {
 }
 
 type SecurityCapabilities struct {
-	TLS1_0               xsd.Boolean    `xml:"TLS1_0,attr"`
-	TLS1_1               xsd.Boolean    `xml:"TLS1_1,attr"`
-	TLS1_2               xsd.Boolean    `xml:"TLS1_2,attr"`
-	OnboardKeyGeneration xsd.Boolean    `xml:"OnboardKeyGeneration,attr"`
-	AccessPolicyConfig   xsd.Boolean    `xml:"AccessPolicyConfig,attr"`
-	DefaultAccessPolicy  xsd.Boolean    `xml:"DefaultAccessPolicy,attr"`
-	Dot1X                xsd.Boolean    `xml:"Dot1X,attr"`
-	RemoteUserHandling   xsd.Boolean    `xml:"RemoteUserHandling,attr"`
-	X_509Token           xsd.Boolean    `xml:"X_509Token,attr"`
-	SAMLToken            xsd.Boolean    `xml:"SAMLToken,attr"`
-	KerberosToken        xsd.Boolean    `xml:"KerberosToken,attr"`
-	UsernameToken        xsd.Boolean    `xml:"UsernameToken,attr"`
-	HttpDigest           xsd.Boolean    `xml:"HttpDigest,attr"`
-	RELToken             xsd.Boolean    `xml:"RELToken,attr"`
-	SupportedEAPMethods  EAPMethodTypes `xml:"SupportedEAPMethods,attr"`
-	MaxUsers             int            `xml:"MaxUsers,attr"`
-	MaxUserNameLength    int            `xml:"MaxUserNameLength,attr"`
-	MaxPasswordLength    int            `xml:"MaxPasswordLength,attr"`
-}
-
-type EAPMethodTypes struct {
-	Types []int
+	TLS1_0               xsd.Boolean       `xml:"TLS1_0,attr"`
+	TLS1_1               xsd.Boolean       `xml:"TLS1_1,attr"`
+	TLS1_2               xsd.Boolean       `xml:"TLS1_2,attr"`
+	OnboardKeyGeneration xsd.Boolean       `xml:"OnboardKeyGeneration,attr"`
+	AccessPolicyConfig   xsd.Boolean       `xml:"AccessPolicyConfig,attr"`
+	DefaultAccessPolicy  xsd.Boolean       `xml:"DefaultAccessPolicy,attr"`
+	Dot1X                xsd.Boolean       `xml:"Dot1X,attr"`
+	RemoteUserHandling   xsd.Boolean       `xml:"RemoteUserHandling,attr"`
+	X_509Token           xsd.Boolean       `xml:"X_509Token,attr"`
+	SAMLToken            xsd.Boolean       `xml:"SAMLToken,attr"`
+	KerberosToken        xsd.Boolean       `xml:"KerberosToken,attr"`
+	UsernameToken        xsd.Boolean       `xml:"UsernameToken,attr"`
+	HttpDigest           xsd.Boolean       `xml:"HttpDigest,attr"`
+	RELToken             xsd.Boolean       `xml:"RELToken,attr"`
+	SupportedEAPMethods  onvif.IntAttrList `xml:"SupportedEAPMethods,attr"`
+	MaxUsers             int               `xml:"MaxUsers,attr"`
+	MaxUserNameLength    int               `xml:"MaxUserNameLength,attr"`
+	MaxPasswordLength    int               `xml:"MaxPasswordLength,attr"`
 }
 
 type SystemCapabilities struct {
