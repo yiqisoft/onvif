@@ -71,6 +71,7 @@ type SystemCapabilities struct {
 	HttpSupportInformation   xsd.Boolean          `xml:"HttpSupportInformation,attr"`
 	StorageConfiguration     xsd.Boolean          `xml:"StorageConfiguration,attr"`
 	MaxStorageConfigurations int                  `xml:"MaxStorageConfigurations,attr"`
+	StorageTypesSupported    onvif.StringAttrList `xml:"StorageTypesSupported,attr"`
 	GeoLocationEntries       int                  `xml:"GeoLocationEntries,attr"`
 	AutoGeo                  onvif.StringAttrList `xml:"AutoGeo,attr"`
 }
@@ -81,11 +82,23 @@ type MiscCapabilities struct {
 
 type StorageConfiguration struct {
 	onvif.DeviceEntity
-	Data StorageConfigurationData `xml:"tds:Data"`
+	Data struct {
+		Type       xsd.String `xml:"type,attr"`
+		Region     string
+		LocalPath  xsd.AnyURI
+		StorageUri xsd.AnyURI
+		User       struct {
+			UserName  xsd.String
+			Password  xsd.String  `json:",omitempty"`
+			Extension xsd.AnyType `json:",omitempty"`
+		}
+		Extension xsd.AnyURI `json:",omitempty"`
+	}
 }
 
 type StorageConfigurationData struct {
 	Type       xsd.String     `xml:"type,attr"`
+	Region     string         `xml:"tds:Region,omitempty"`
 	LocalPath  xsd.AnyURI     `xml:"tds:LocalPath"`
 	StorageUri xsd.AnyURI     `xml:"tds:StorageUri"`
 	User       UserCredential `xml:"tds:User"`
@@ -834,12 +847,12 @@ type GetStorageConfigurations struct {
 }
 
 type GetStorageConfigurationsResponse struct {
-	StorageConfigurations StorageConfiguration
+	StorageConfigurations []StorageConfiguration
 }
 
 type CreateStorageConfiguration struct {
-	XMLName              string `xml:"tds:CreateStorageConfiguration"`
-	StorageConfiguration StorageConfigurationData
+	XMLName              string                   `xml:"tds:CreateStorageConfiguration"`
+	StorageConfiguration StorageConfigurationData `xml:"tds:StorageConfiguration"`
 }
 
 type CreateStorageConfigurationResponse struct {
@@ -856,8 +869,11 @@ type GetStorageConfigurationResponse struct {
 }
 
 type SetStorageConfiguration struct {
-	XMLName              string               `xml:"tds:SetStorageConfiguration"`
-	StorageConfiguration StorageConfiguration `xml:"tds:StorageConfiguration"`
+	XMLName              string `xml:"tds:SetStorageConfiguration"`
+	StorageConfiguration struct {
+		Token xsd.String               `xml:"token,attr"`
+		Data  StorageConfigurationData `xml:"tds:Data"`
+	} `xml:"tds:StorageConfiguration"`
 }
 
 type SetStorageConfigurationResponse struct {
