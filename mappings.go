@@ -16,6 +16,7 @@ import (
 	"github.com/IOTechSystems/onvif/media"
 	"github.com/IOTechSystems/onvif/media2"
 	"github.com/IOTechSystems/onvif/ptz"
+	"github.com/IOTechSystems/onvif/recording"
 )
 
 var AnalyticsFunctionMap = map[string]Function{
@@ -271,4 +272,28 @@ var PTZFunctionMap = map[string]Function{
 	SetHomePosition:             &ptz.SetHomePositionFunction{},
 	SetPreset:                   &ptz.SetPresetFunction{},
 	Stop:                        &ptz.StopFunction{},
+}
+
+var RecordingFunctionMap = map[string]Function{
+	CreateRecording:              &recording.CreateRecordingFunction{},
+	CreateRecordingJob:           &recording.CreateRecordingJobFunction{},
+	CreateTrack:                  &recording.CreateTrackFunction{},
+	DeleteRecording:              &recording.DeleteRecordingFunction{},
+	DeleteRecordingJob:           &recording.DeleteRecordingJobFunction{},
+	DeleteTrack:                  &recording.DeleteTrackFunction{},
+	ExportRecordedData:           &recording.ExportRecordedDataFunction{},
+	GetExportRecordedDataState:   &recording.GetExportRecordedDataStateFunction{},
+	GetRecordingConfiguration:    &recording.GetRecordingConfigurationFunction{},
+	GetRecordingJobConfiguration: &recording.GetRecordingJobConfigurationFunction{},
+	GetRecordingJobState:         &recording.GetRecordingJobStateFunction{},
+	GetRecordingJobs:             &recording.GetRecordingJobsFunction{},
+	GetRecordingOptions:          &recording.GetRecordingOptionsFunction{},
+	GetRecordings:                &recording.GetRecordingsFunction{},
+	GetServiceCapabilities:       &recording.GetServiceCapabilitiesFunction{},
+	GetTrackConfiguration:        &recording.GetTrackConfigurationFunction{},
+	SetRecordingConfiguration:    &recording.SetRecordingConfigurationFunction{},
+	SetRecordingJobConfiguration: &recording.SetRecordingJobConfigurationFunction{},
+	SetRecordingJobMode:          &recording.SetRecordingJobModeFunction{},
+	SetTrackConfiguration:        &recording.SetTrackConfigurationFunction{},
+	StopExportRecordedData:       &recording.StopExportRecordedDataFunction{},
 }

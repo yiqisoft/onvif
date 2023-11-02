@@ -17,6 +17,7 @@ const (
 	MediaWebService     = "Media"
 	Media2WebService    = "Media2"
 	PTZWebService       = "PTZ"
+	RecordingWebService = "Recording"
 )
 
 // WebService - Analytics
@@ -269,4 +270,28 @@ const (
 	SetConfiguration            = "SetConfiguration"
 	SetHomePosition             = "SetHomePosition"
 	SetPreset                   = "SetPreset"
+)
+
+// WebService - Recording
+const (
+	CreateRecording              = "CreateRecording"
+	CreateRecordingJob           = "CreateRecordingJob"
+	CreateTrack                  = "CreateTrack"
+	DeleteRecording              = "DeleteRecording"
+	DeleteRecordingJob           = "DeleteRecordingJob"
+	DeleteTrack                  = "DeleteTrack"
+	ExportRecordedData           = "ExportRecordedData"
+	GetExportRecordedDataState   = "GetExportRecordedDataState"
+	GetRecordingConfiguration    = "GetRecordingConfiguration"
+	GetRecordingJobConfiguration = "GetRecordingJobConfiguration"
+	GetRecordingJobState         = "GetRecordingJobState"
+	GetRecordingJobs             = "GetRecordingJobs"
+	GetRecordingOptions          = "GetRecordingOptions"
+	GetRecordings                = "GetRecordings"
+	GetTrackConfiguration        = "GetTrackConfiguration"
+	SetRecordingConfiguration    = "SetRecordingConfiguration"
+	SetRecordingJobConfiguration = "SetRecordingJobConfiguration"
+	SetRecordingJobMode          = "SetRecordingJobMode"
+	SetTrackConfiguration        = "SetTrackConfiguration"
+	StopExportRecordedData       = "StopExportRecordedData"
 )
