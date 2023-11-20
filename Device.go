@@ -38,6 +38,7 @@ var Xlmns = map[string]string{
 	"wsntw":   "http://docs.oasis-open.org/wsn/bw-2",
 	"wsrf-rw": "http://docs.oasis-open.org/wsrf/rw-2",
 	"wsaw":    "http://www.w3.org/2006/05/addressing/wsdl",
+	"tt":      "http://www.onvif.org/ver10/recording/wsdl",
 	"wsse":    "http://docs.oasis-open.org/wss/2004/01/oasis-200401",
 	"wsu":     "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd",
 }
@@ -128,6 +129,11 @@ func (dev *Device) getSupportedServices(resp *http.Response) {
 	}
 	services := doc.FindElements("./Envelope/Body/GetCapabilitiesResponse/Capabilities/*/XAddr")
 	for _, j := range services {
+		dev.addEndpoint(j.Parent().Tag, j.Text())
+	}
+
+	extensionServices := doc.FindElements("./Envelope/Body/GetCapabilitiesResponse/Capabilities/Extension/*/XAddr")
+	for _, j := range extensionServices {
 		dev.addEndpoint(j.Parent().Tag, j.Text())
 	}
 }
