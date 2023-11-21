@@ -16,7 +16,6 @@ import (
 
 	"github.com/IOTechSystems/onvif/device"
 	"github.com/IOTechSystems/onvif/gosoap"
-	"github.com/IOTechSystems/onvif/networking"
 	"github.com/beevik/etree"
 )
 
@@ -232,30 +231,11 @@ func (dev *Device) CallMethod(method interface{}) (*http.Response, error) {
 	if err != nil {
 		return nil, err
 	}
-	return dev.callMethodDo(endpoint, method)
-}
-
-// CallMethod functions call an method, defined <method> struct with authentication data
-func (dev *Device) callMethodDo(endpoint string, method interface{}) (*http.Response, error) {
-	output, err := xml.MarshalIndent(method, "  ", "    ")
+	requestBody, err := xml.Marshal(method)
 	if err != nil {
 		return nil, err
 	}
-
-	soap, err := dev.buildMethodSOAP(string(output))
-	if err != nil {
-		return nil, err
-	}
-
-	soap.AddRootNamespaces(Xlmns)
-	soap.AddAction()
-
-	//Auth Handling
-	if dev.params.Username != "" && dev.params.Password != "" {
-		soap.AddWSSecurity(dev.params.Username, dev.params.Password)
-	}
-
-	return networking.SendSoap(dev.params.HttpClient, endpoint, soap.String())
+	return dev.SendSoap(endpoint, string(requestBody))
 }
 
 func (dev *Device) GetDeviceParams() DeviceParams {
