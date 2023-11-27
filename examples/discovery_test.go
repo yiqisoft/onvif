@@ -11,7 +11,7 @@ import (
 
 	"github.com/IOTechSystems/onvif"
 	"github.com/IOTechSystems/onvif/device"
-	"github.com/IOTechSystems/onvif/ws-discovery"
+	wsdiscovery "github.com/IOTechSystems/onvif/ws-discovery"
 	"github.com/beevik/etree"
 )
 
@@ -19,7 +19,7 @@ func TestGetAvailableDevicesAtSpecificEthernetInterface(t *testing.T) {
 
 	// client()
 	// runDiscovery("en0")
-	s := wsdiscovery.GetAvailableDevicesAtSpecificEthernetInterface("en0")
+	s, _ := wsdiscovery.GetAvailableDevicesAtSpecificEthernetInterface("en0")
 
 	log.Printf("%v", s)
 }
@@ -32,7 +32,7 @@ func client() {
 
 	log.Printf("output %+v", dev.GetServices())
 
-	res, err := dev.CallMethod(device.GetUsers{})
+	res, _ := dev.CallMethod(device.GetUsers{})
 	bs, _ := ioutil.ReadAll(res.Body)
 	log.Printf("output %+v %s", res.StatusCode, bs)
 }
@@ -45,7 +45,7 @@ type Host struct {
 
 func runDiscovery(interfaceName string) {
 	var hosts []*Host
-	devices := wsdiscovery.SendProbe(interfaceName, nil, []string{"dn:NetworkVideoTransmitter"}, map[string]string{"dn": "http://www.onvif.org/ver10/network/wsdl"})
+	devices, _ := wsdiscovery.SendProbe(interfaceName, nil, []string{"dn:NetworkVideoTransmitter"}, map[string]string{"dn": "http://www.onvif.org/ver10/network/wsdl"})
 	for _, j := range devices {
 		doc := etree.NewDocument()
 		if err := doc.ReadFromString(j); err != nil {
