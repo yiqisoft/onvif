@@ -73,6 +73,7 @@ func (devType DeviceType) String() string {
 
 // DeviceInfo struct contains general information about ONVIF device
 type DeviceInfo struct {
+	Name            string
 	Manufacturer    string
 	Model           string
 	FirmwareVersion string
@@ -107,6 +108,34 @@ func (dev *Device) GetServices() map[string]string {
 // GetServices return available endpoints
 func (dev *Device) GetDeviceInfo() DeviceInfo {
 	return dev.info
+}
+
+// SetDeviceInfoFromScopes goes through the scopes and sets the device info fields for supported categories (currently name and hardware).
+// See 7.3.2.2 Scopes in the ONVIF Core Specification (https://www.onvif.org/specs/core/ONVIF-Core-Specification.pdf).
+func (dev *Device) SetDeviceInfoFromScopes(scopes []string) {
+	newInfo := dev.info
+	supportedScopes := []struct {
+		category string
+		setField func(s string)
+	}{
+		{category: "name", setField: func(s string) { newInfo.Name = s }},
+		{category: "hardware", setField: func(s string) { newInfo.Model = s }},
+	}
+
+	for _, s := range scopes {
+		for _, supp := range supportedScopes {
+			fullScope := fmt.Sprintf("onvif://www.onvif.org/%s/", supp.category)
+			scopeValue, matchesScope := strings.CutPrefix(s, fullScope)
+			if matchesScope {
+				unescaped, err := url.QueryUnescape(scopeValue)
+				if err != nil {
+					continue
+				}
+				supp.setField(unescaped)
+			}
+		}
+	}
+	dev.info = newInfo
 }
 
 func readResponse(resp *http.Response) string {
