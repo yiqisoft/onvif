@@ -53,6 +53,13 @@ var eventPropertiesData = []byte(`
         </tev:GetEventPropertiesResponse>
 `)
 
+var eventRenewResponse = []byte(`
+        <tev:RenewResponse>
+            <wsnt:TerminationTime>2023-11-25T18:08:15Z</wsnt:TerminationTime>
+            <wsnt:CurrentTime>2023-11-24T14:50:25Z</wsnt:CurrentTime>
+        </tev:RenewResponse>
+`)
+
 func TestEventPropertiesUnmarshalXML(t *testing.T) {
 	res := GetEventPropertiesResponse{}
 	err := xml.Unmarshal(eventPropertiesData, &res)
@@ -72,4 +79,14 @@ func TestEventPropertiesUnmarshalXML(t *testing.T) {
 	assert.True(t, exists)
 	_, exists = (tamper).(map[string]interface{})["tt:MessageDescription"]
 	assert.True(t, exists)
+}
+
+func TestRenewFunction_Response(t *testing.T) {
+	res := RenewResponse{}
+	err := xml.Unmarshal(eventRenewResponse, &res)
+	require.NoError(t, err)
+	assert.NotNil(t, res.TerminationTime)
+	assert.NotNil(t, res.CurrentTime)
+	assert.Equal(t, xsd.String("2023-11-25T18:08:15Z"), *res.TerminationTime)
+	assert.Equal(t, xsd.String("2023-11-24T14:50:25Z"), *res.CurrentTime)
 }
