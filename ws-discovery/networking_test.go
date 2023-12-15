@@ -48,7 +48,7 @@ func TestDevicesFromProbeResponses(t *testing.T) {
 
 	devices, err := DevicesFromProbeResponses(probeResponses)
 	require.NoError(t, err)
-	assert.Equal(t, 2, len(devices))
+	require.Equal(t, 2, len(devices))
 	assert.Equal(t, devices[0].GetDeviceParams().Xaddr, "192.168.12.123")
 	assert.Equal(t, devices[0].GetDeviceParams().EndpointRefAddress, "cea94000-fb96-11b3-8260-686dbc5cb15d")
 	assert.Equal(t, devices[1].GetDeviceParams().Xaddr, "192.168.12.128:2020")

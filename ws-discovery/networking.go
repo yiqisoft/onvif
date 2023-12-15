@@ -94,6 +94,13 @@ func DevicesFromProbeResponses(probeResponses []string) ([]onvif.Device, error) 
 				continue
 			}
 
+			var scopes []string
+			ref := probeMatch.FindElement("./Scopes")
+			if ref != nil {
+				scopes = strings.Split(ref.Text(), " ")
+			}
+			dev.SetDeviceInfoFromScopes(scopes)
+
 			xaddrSet[xaddr] = struct{}{}
 			nvtDevices = append(nvtDevices, *dev)
 			// TODO: Add logger for fmt.Printf("Onvif WS-Discovery: Find Xaddr: %-25s EndpointRefAddress: %s\n", xaddr, string(endpointRefAddress))
