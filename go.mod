@@ -7,7 +7,7 @@ require (
 	github.com/clbanning/mxj/v2 v2.7.0
 	github.com/elgs/gostrgen v0.0.0-20161222160715-9d61ae07eeae
 	github.com/gin-gonic/gin v1.9.1
-	github.com/google/uuid v1.4.0
+	github.com/google/uuid v1.5.0
 	github.com/stretchr/testify v1.8.4
 	golang.org/x/net v0.19.0
 )
