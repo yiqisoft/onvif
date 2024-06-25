@@ -6,13 +6,14 @@ import (
 	"encoding/xml"
 	"errors"
 	"fmt"
-	"github.com/IOTechSystems/onvif/xsd/onvif"
 	"io/ioutil"
 	"net/http"
 	"net/url"
 	"reflect"
 	"strconv"
 	"strings"
+
+	"github.com/IOTechSystems/onvif/xsd/onvif"
 
 	"github.com/IOTechSystems/onvif/device"
 	"github.com/IOTechSystems/onvif/gosoap"
@@ -380,6 +381,9 @@ func (dev *Device) SendGetSnapshotRequest(url string) (resp *http.Response, err 
 		}
 		// Basic auth might work for some camera
 		req.SetBasicAuth(dev.params.Username, dev.params.Password)
+		req.SetPathValue("user", dev.params.Username)
+		req.SetPathValue("pwd", dev.params.Password)
+		req.SetPathValue("password", dev.params.Password)
 		resp, err = dev.params.HttpClient.Do(req)
 
 	} else if dev.params.AuthMode == DigestAuth || dev.params.AuthMode == Both {
